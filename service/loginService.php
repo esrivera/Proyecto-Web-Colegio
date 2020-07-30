@@ -14,11 +14,10 @@ include 'mainService.php';
         return null;
     }
 
-    function getRol($codUsuario){
+    function getRol($codUsuario,$codPersona){
         $result = $this->conex->query(
-            //"SELECT * FROM ROL_USUARIO WHERE COD_USUARIO='$codUsuario' ");
-            "SELECT RU.COD_ROL, RU.COD_USUARIO, PER.NOMBRE, PER.APELLIDO FROM ROL_USUARIO AS RU, PERSONA AS PER, USUARIO AS USU 
-            WHERE RU.COD_USUARIO = $codUsuario AND PER.COD_PERSONA = USU.COD_PERSONA;");
+            "SELECT RU.COD_ROL, RU.COD_USUARIO, PER.NOMBRE, PER.APELLIDO FROM ROL_USUARIO AS RU, PERSONA AS PER
+            WHERE RU.COD_USUARIO = $codUsuario AND PER.COD_PERSONA = $codPersona;");
         if ($result->num_rows > 0) {
             return $result->fetch_assoc();
             

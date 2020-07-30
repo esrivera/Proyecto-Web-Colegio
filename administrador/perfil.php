@@ -8,7 +8,7 @@
 
         $loginService = new LoginService();
 
-        $datosUsuario=$loginService->getRol($_SESSION['user']['COD_USUARIO']);
+        $datosUsuario=$loginService->getRol($_SESSION['user']['COD_USUARIO'],$_SESSION['user']['COD_PERSONA']);
         
         if($datosUsuario['COD_ROL']=='ADM'){
             $nombreRol= 'ADMINISTRADOR';
@@ -128,8 +128,8 @@
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item">Admin</li>
-                                <li class="breadcrumb-item active">Inicio</li>
+                                <li class="breadcrumb-item"><?php echo $nombreRol?></li>
+                                <li class="breadcrumb-item active">INICIO</li>
                             </ol>
                         </div>
                     </div>
