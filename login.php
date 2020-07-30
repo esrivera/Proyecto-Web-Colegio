@@ -7,7 +7,7 @@
         if (isset($row)) {
             session_start();
             $_SESSION["user"] = $row;
-            header('Location: admin.php');
+            header('Location: administrador/perfil.php');
         } 
     }
 ?>
