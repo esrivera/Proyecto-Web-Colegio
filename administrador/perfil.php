@@ -1,3 +1,30 @@
+<?php
+      include '../service/loginService.php';
+      
+      session_start();
+      if(!isset($_SESSION['user'])){
+          header('Location: ../login.php');
+      }else{
+
+        $loginService = new LoginService();
+
+        $datosUsuario=$loginService->getRol($_SESSION['user']['COD_USUARIO']);
+        
+        if($datosUsuario['COD_ROL']=='ADM'){
+            $nombreRol= 'ADMINISTRADOR';
+        }elseif($datosUsuario['COD_ROL']=='EST'){
+            $nombreRol= 'ESTUDIANTE';
+        }elseif($datosUsuario['COD_ROL']=='DOC'){
+            $nombreRol= 'DOCENTE';
+        }elseif ($datosUsuario['COD_ROL']=='REP') {
+            $nombreRol= 'REPRESENTANTE';
+        }
+      }
+
+  
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,7 +73,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">Cerrar Sesión</a>
+                        <a href="../service/logout.php" class="dropdown-item dropdown-footer">Cerrar Sesión</a>
                     </div>
                 </li>
             </ul>
@@ -59,7 +86,8 @@
             <a href="#" class="brand-link">
                 <img src="../public/intranet/dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
                     class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">ADMINISTRADOR</span>
+
+                <span class="brand-text font-weight-light"><?php echo $nombreRol?></span> 
             </a>
 
             <!-- Sidebar -->
@@ -71,108 +99,20 @@
                             alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">Santiago Vivas</a>
+                        <a href="#" class="d-block"><?php echo $datosUsuario['APELLIDO']; echo " ";echo $datosUsuario['NOMBRE'] ?></a>
                     </div>
                 </div>
+            <!-- Call Menu Rols -->
+            <?php
+                if($datosUsuario['COD_ROL']=='ADM'){
+                    include '../partials/menuAdm.php';
+                }elseif($datosUsuario['COD_ROL']=='EST'){
+                    include '../partials/menuEst.php';
+                }
+                
+            ?>
 
-                <!-- Sidebar Menu -->
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                        data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-                        <li class="nav-item">
-                            <a href="perfil.html" class="nav-link active">
-                                <i class="nav-icon fas fa-circle"></i>
-                                <p>
-                                    Perfil
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item has-treeview">
-                            <a href="" class="nav-link">
-                                <i class="nav-icon fas fa-file"></i>
-                                <p>
-                                    Gestión Usuarios
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="alumno.html  " class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Alumnos</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="docente.html" class="nav-link ">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Docentes</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="Representante.html" class="nav-link ">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Representantes</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item has-treeview">
-                            <a href="" class="nav-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p>
-                                    Gestión Infraestructura
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="./infraestructura/sede.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Sedes</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="./infraestructura/edificio.html" class="nav-link ">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Edificios</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="./infraestructura/aula.html" class="nav-link ">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Aulas</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item has-treeview">
-                            <a href="" class="nav-link">
-                                <i class="nav-icon fas fa-edit"></i>
-                                <p>
-                                    Organización Academica
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="periodo.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Gestión Periodos</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="asignatura.html" class="nav-link ">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Gestión Asignaturas</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
-                <!-- /.sidebar-menu -->
+            <!-- End Call Menu Rols -->
             </div>
             <!-- /.sidebar -->
         </aside>

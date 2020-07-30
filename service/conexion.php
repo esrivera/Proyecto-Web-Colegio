@@ -11,7 +11,7 @@ class Connection {
 		echo "</p>";
 		exit;
 	}
-    echo "<p>Conectado con Ã©xito</p>" . PHP_EOL;
+   
     return $conex;
 
  }
