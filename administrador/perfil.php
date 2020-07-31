@@ -35,14 +35,9 @@
 
     <title>COLEGIO VPR | Perfil</title>
 
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="../public/intranet/plugins/fontawesome-free/css/all.min.css">
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="../public/intranet/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="../public/intranet/dist/css/adminlte.min.css">
-    <!-- Google Font: Source Sans Pro -->
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <!-- CALL HEAD STYLES -->
+    <?php include '../partials/head.php';?>
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
@@ -151,13 +146,8 @@
         </div>
         <!-- /.content-wrapper -->
 
-        <footer class="main-footer">
-            <div class="float-right d-none d-sm-block">
-                <b>Version</b> 3.0.5
-            </div>
-            <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
-            reserved.
-        </footer>
+        <!-- CALL FOOTER -->   
+        <?php include '../partials/footer.php';?>
 
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
@@ -167,18 +157,7 @@
     </div>
     <!-- ./wrapper -->
 
-    <!-- jQuery -->
-    <script src="../public/intranet/plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="../public/intranet/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- jQuery UI -->
-    <script src="../public/intranet/plugins/jquery-ui/jquery-ui.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="../public/intranet/dist/js/adminlte.min.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="../public/intranet/dist/js/demo.js"></script>
-    <!-- fullCalendar 2.2.5 -->
-    <script src="../public/intranet/plugins/moment/moment.min.js"></script>
+    
 
     <!-- Page specific script -->
 </body>

@@ -86,7 +86,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="asignatura.html" class="nav-link ">
+                                    <a href="../administrador/asignatura.php" class="nav-link ">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Gestión Asignaturas</p>
                                     </a>
