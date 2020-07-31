@@ -9,7 +9,7 @@
         $loginService = new LoginService();
 
         $datosUsuario=$loginService->getRol($_SESSION['user']['COD_USUARIO'],$_SESSION['user']['COD_PERSONA']);
-        
+        $_SESSION["user"] = $datosUsuario;
         if($datosUsuario['COD_ROL']=='ADM'){
             $nombreRol= 'ADMINISTRADOR';
         }elseif($datosUsuario['COD_ROL']=='EST'){
