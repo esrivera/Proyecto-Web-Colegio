@@ -5,14 +5,45 @@
       if(!isset($_SESSION['user'])){
           header('Location: ../login.php');
       }else{
+        $accion="Agregar";
         $asignaturas ="";
         $asignService = new AsignService();
 
-        $nivelAsignatura=$asignService->getNivelEducativo();
+        $codAsignatura = "";
+        $nombre = "";
+        $creditos = "";
+        $tipo = "";
+        $codNivelEducativo = "";
 
+        $nivelAsignatura=$asignService->getNivelEducativo();
+        
         if(isset($_POST["codNivelAsignatura"])){
           $asignaturas = $asignService->getAsignaturas($_POST["codNivelAsignatura"]);
+        }
+        if(isset($_POST["accion"]) && $_POST["accion"] == "Agregar"){
+          $asignService->insert($_POST["nivelEducativo"],$_POST["codigoAsignatura"],
+                                $_POST["nombre"],$_POST["creditos"],$_POST["tipoAsignatura"]);
+          $asignaturas = $asignService->getAsignaturas($_POST["nivelEducativo"]);
+
+        }elseif(isset($_GET['actualizar'])){
+         $datosAsignatura = $asignService->findByPk($_GET['actualizar']);
+          if($datosAsignatura!=null){
+              $codAsignatura = $datosAsignatura["COD_ASIGNATURA"];
+              $nombre = $datosAsignatura["NOMBRE"];
+              $creditos = $datosAsignatura["CREDITOS"];
+              $tipo = $datosAsignatura["TIPO"];
+              $codNivelEducativo = $datosAsignatura["COD_NIVEL_EDUCATIVO"];
+          }
+
+          $accion="Modificar";
+        }elseif(isset($_POST["accion"]) && $_POST["accion"] == "Modificar"){
+
+          $asignService->update($_POST["nivelEducativo"],$_POST["codigoAsignatura"], $_POST["nombre"],$_POST["creditos"],$_POST["tipoAsignatura"]);
+          $asignaturas = $asignService->getAsignaturas($_POST["codNivelAsignatura"]);
+        }elseif(isset($_POST["codigoElimAsignatura"])){
           
+          $asignService->delete($_POST["codigoElimAsignatura"]);
+          $asignaturas = $asignService->getAsignaturas($_POST["codNivelAsignatura"]);
         }
 
       }
@@ -113,7 +144,7 @@
 
             <!-- Main content -->
             <!-- Main content -->
-            <form action="./asignatura.php" method="post" id="formAsignatura" class="formAsignatura"></form>
+            <form action="./asignatura.php" method="POST" id="formAsignatura" class="formAsignatura">
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
@@ -124,71 +155,80 @@
                             </div>
                             <div class="form-group">
                                 <div class="row">
-                                    <select class="form-control" id="codNivelAsignatura" name="codNivelAsignatura" form ="formAsignatura" >
+                                    <select class="form-control" id="codNivelAsignatura" name="codNivelAsignatura"
+                                        form="formAsignatura">
                                         <?php   if ($nivelAsignatura->num_rows > 0) { 
                                                 while($nivel = $nivelAsignatura->fetch_assoc()) {
-                                                      ?><option value=<?php echo $nivel["COD_NIVEL_EDUCATIVO"]?>>
-                                            <?php             echo $nivel["NOMBRE"]?> 
-                                          <?php   ?>
-                                          </option>
+                                                      ?><option <?php  
+                                                      if(isset($_POST["codNivelAsignatura"])){
+                                                        if($_POST["codNivelAsignatura"] == $nivel["COD_NIVEL_EDUCATIVO"]){
+                                                          ?> selected <?php
+                                                        }
+                                                      
+                                                      }
+                                                    
+                                                    ?> value=<?php echo $nivel["COD_NIVEL_EDUCATIVO"]?>>
+                                            <?php             echo $nivel["NOMBRE"]?>
+
+                                        </option>
                                         <?php         }
                                             }
                                         ?>
                                     </select>
                                     <div class="">
-                                    <input type="button" name="Buscar" class="btn btn-block btn-primary float-right"
-                                      style="padding-bottom: 4px; width:75px;" value="Buscar" onclick="buscarAsignaturas();">
+                                        <input type="button" name="Buscar" class="btn btn-block btn-primary float-right"
+                                            style="padding-bottom: 4px; width:75px;" value="Buscar"
+                                            onclick="buscarAsignaturas();">
                                     </div>
                                 </div>
                             </div>
 
                             <div class="card-body table-responsive p-0" style="height: 300px;">
-                                        <table class="table table-head-fixed text-nowrap">
-                                            <thead>
-                                                <tr>
-                                                    <th>CÓDIGO</th>
-                                                    <th>NOMBRE</th>
-                                                    <th>CREDITOS</th>
-                                                    <th>TIPO</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php
+                                <table class="table table-head-fixed text-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>CÓDIGO</th>
+                                            <th>NOMBRE</th>
+                                            <th>CREDITOS</th>
+                                            <th>TIPO</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
                                         if($asignaturas!=""){
                                         if ($asignaturas->num_rows > 0) {
                                         // output data of each row
                                         while($row = $asignaturas->fetch_assoc()) {
                                         ?>
-                                                <tr>
-                                                    <td><a
-                                                            href="./asignatura.php?update=<?php echo $row["COD_ASIGNATURA"]?>">
-                                                            <?php echo $row["COD_ASIGNATURA"]?> </a></td>
-                                                    <td><?php echo $row["CREDITOS"]?></td>
-                                                    <td><?php echo $row["TIPO"]?></td>
-                                                    <td><input type="radio" name="codigoElimAsignatura"
-                                                            value="<?php echo $row["COD_ASIGNATURA"]?>"></td>
-                                                </tr>
-                                                <?php 
+                                        <tr>
+                                            <td><a href="./asignatura.php?actualizar=<?php echo $row["COD_ASIGNATURA"]?>">
+                                                    <?php echo $row["COD_ASIGNATURA"]?> </a></td>
+                                            <td><?php echo $row["NOMBRE"]?></td>
+                                            <td><?php echo $row["CREDITOS"]?></td>
+                                            <td><?php echo $row["TIPO"]?></td>
+                                            <td><input type="radio" name="codigoElimAsignatura"
+                                                    value="<?php echo $row["COD_ASIGNATURA"]?>"></td>
+                                        </tr>
+                                        <?php 
                                         }
                                         ?>
 
-                                                <?php 
+                                        <?php 
                                         }else{
                                         ?>
-                                                <tr>
-                                                    <td colspan="4"> No hay datos</td>
-                                                </tr>
-                                                <?php }}
+                                        <tr>
+                                            <td colspan="4"> No hay datos</td>
+                                        </tr>
+                                        <?php }}
                                         ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="form-group card-header">
-                                        <input type="button" name="eliminar"
-                                            class="btn btn-block btn-primary float-right"
-                                            style="padding-bottom: 4px; width:75px;" value="Eliminar"
-                                            onclick="eliminarFunc();">
-                                    </div>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="form-group card-header">
+                                <input type="button" name="eliminar" class="btn btn-block btn-primary float-right"
+                                    style="padding-bottom: 4px; width:75px;" value="Eliminar" onclick="eliminarAsignatura();">
+                            </div>
 
 
                             <!-- general form elements -->
@@ -201,50 +241,50 @@
 
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Código</label>
-                                        <input type="text" class="form-control" id="name"
-                                            placeholder="Ingrese el código">
+                                        <label for="codigo">Código</label>
+                                        <input type="text" class="form-control" id="codigo" name="codigoAsignatura" 
+                                          value="<?php echo $codAsignatura;?>" placeholder="Ingrese el código">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Nombre</label>
-                                        <input type="text" class="form-control" id="lastname"
-                                            placeholder="Ingrese el nombre de la asignatura">
+                                        <label for="nombre">Nombre</label>
+                                        <input type="text" class="form-control" id="nombre" name="nombre"
+                                        value="<?php echo $nombre;?>" placeholder="Ingrese el nombre de la asignatura">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Descripción</label>
-                                        <input type="text" class="form-control" id="name"
-                                            placeholder="Ingrese la Descripción">
+                                        <label for="creditos">Créditos</label>
+                                        <input type="number" class="form-control" id="creditos" name="creditos" min=1
+                                        value="<?php echo $creditos;?>"  placeholder="Ingrese el número de créditos">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Horas</label>
-                                        <input type="text" class="form-control" id="name" placeholder="Ingrese la hora">
-                                    </div>
+                                        <label for="tipoAsignatura">Tipo</label>
+                                        <select class="form-control" id="tipoAsignatura" name="tipoAsignatura"
+                                            form="formAsignatura" value="<?php echo $tipo;?>">
+                                            <option value='MIN'>Ministerio</option>
 
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Días</label>
-                                        <input type="text" class="form-control" id="name"
-                                            placeholder="Ingrese los días">
-                                    </div>
+                                            <option value='PRO'>Propia</option>
 
-                                    <div class="form-group">
-                                        <label>Seleccione El Nivel Educativo</label>
-                                        <select class="form-control" id="nivelAsignatura" name="nivelAsignatura">
-                                            <?php   if ($nivelAsignatura->num_rows > 0) { 
-                                                        while($nivel = $nivelAsignatura->fetch_assoc()) {
-                                                        ?><option value=<?php echo $nivel["COD_NIVEL_EDUCATIVO"]?>>
-                                                <?php echo $nivel["NOMBRE"]?> </option>
-                                            <?php }
-                                                 }
-                                        ?>
+                                            <option value='OTR'>Otra</option>
                                         </select>
                                     </div>
+
+                                    <div class="form-group">
+                                        <label for="nivelEducativo">Nivel Educativo</label>
+                                        <select class="form-control" id="nivelEducativo" name="nivelEducativo"
+                                            form="formAsignatura">
+                                            <option value='BAC01'>PRIMERO DE BACHILLERATO</option>
+                                            <option value='BAC02'>SEGUNDO DE BACHILLERATO</option>
+                                            <option value='BAS01'>OCTAVO CURSO</option>
+                                            <option value='BAS02'>NOVENO CURSO</option>
+                                        </select>
+                                    </div>
+
                                 </div>
                                 <!-- /.card-body -->
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">Agregar</button>
+                                      <input type="submit" class="btn btn-primary btn-block" name="accion" value="<?php echo $accion;?>">
                                 </div>
 
                             </div>
@@ -273,7 +313,9 @@
     function buscarAsignaturas() {
         document.getElementById("formAsignatura").submit();
     }
-
+    function eliminarAsignatura() {
+        document.getElementById("formAsignatura").submit();
+    }
     </script>
 </body>
 
