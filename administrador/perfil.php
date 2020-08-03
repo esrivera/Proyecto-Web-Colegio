@@ -61,15 +61,12 @@
 
                 <!-- Log Out-->
                 <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="fas fa-th-large"></i>
+                    <a href="../service/logout.php" class="dropdown-item dropdown-footer">                        
+                        Cerrar Sesión
                         <span class="badge badge-warning navbar-badge"></span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <div class="dropdown-divider"></div>
-                        <a href="../service/logout.php" class="dropdown-item dropdown-footer">Cerrar Sesión</a>
-                    </div>
                 </li>
+                
             </ul>
         </nav>
         <!-- /.navbar -->
