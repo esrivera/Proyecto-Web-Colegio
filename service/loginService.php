@@ -4,7 +4,11 @@ include 'mainService.php';
  class LoginService extends MainService {
 
     function login($username, $password) {
-        $result = $this->conex->query("SELECT * FROM USUARIO WHERE NOMBRE_USUARIO='$username' ");
+        //$result = $this->conex->query("SELECT * FROM USUARIO WHERE NOMBRE_USUARIO='$username' ");
+        $result = $this->conex->query("SELECT * FROM USUARIO USU
+                                        INNER JOIN ROL_USUARIO RUS ON USU.COD_USUARIO = RUS.COD_USUARIO
+                                        INNER JOIN PERSONA PER ON USU.COD_PERSONA = PER.COD_PERSONA
+                                        WHERE USU.NOMBRE_USUARIO = '$username'");
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             if ($row['CLAVE'] == $password) {
@@ -14,16 +18,6 @@ include 'mainService.php';
         return null;
     }
 
-    function getRol($codUsuario,$codPersona){
-        $result = $this->conex->query(
-            "SELECT RU.COD_ROL, RU.COD_USUARIO, PER.NOMBRE, PER.APELLIDO FROM ROL_USUARIO AS RU, PERSONA AS PER
-            WHERE RU.COD_USUARIO = $codUsuario AND PER.COD_PERSONA = $codPersona;");
-        if ($result->num_rows > 0) {
-            return $result->fetch_assoc();
-            
-        }
-        return null;
-    }
  }
 
 

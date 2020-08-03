@@ -104,7 +104,7 @@
                     </div>
                     <div class="info">
                         <a href="#"
-                            class="d-block"><?php echo $datosUsuario['APELLIDO']; echo " ";echo $datosUsuario['NOMBRE'] ?></a>
+                            class="d-block"><?php echo $_SESSION["user"]['APELLIDO']; echo " ";echo $_SESSION["user"]['NOMBRE'] ?></a>
                     </div>
                 </div>
 

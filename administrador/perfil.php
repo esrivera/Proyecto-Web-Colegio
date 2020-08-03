@@ -8,15 +8,14 @@
 
         $loginService = new LoginService();
 
-        $datosUsuario=$loginService->getRol($_SESSION['user']['COD_USUARIO'],$_SESSION['user']['COD_PERSONA']);
-        $_SESSION["user"] = $datosUsuario;
-        if($datosUsuario['COD_ROL']=='ADM'){
+
+        if($_SESSION["user"]['COD_ROL']=='ADM'){
             $nombreRol= 'ADMINISTRADOR';
-        }elseif($datosUsuario['COD_ROL']=='EST'){
+        }elseif($_SESSION["user"]['COD_ROL']=='EST'){
             $nombreRol= 'ESTUDIANTE';
-        }elseif($datosUsuario['COD_ROL']=='DOC'){
+        }elseif($_SESSION["user"]['COD_ROL']=='DOC'){
             $nombreRol= 'DOCENTE';
-        }elseif ($datosUsuario['COD_ROL']=='REP') {
+        }elseif ($_SESSION["user"]['COD_ROL']=='REP') {
             $nombreRol= 'REPRESENTANTE';
         }
       }
@@ -94,14 +93,14 @@
                             alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block"><?php echo $datosUsuario['APELLIDO']; echo " ";echo $datosUsuario['NOMBRE'] ?></a>
+                        <a href="#" class="d-block"><?php echo $_SESSION["user"]['APELLIDO']; echo " ";echo $_SESSION["user"]['NOMBRE'] ?></a>
                     </div>
                 </div>
             <!-- Call Menu Rols -->
             <?php
-                if($datosUsuario['COD_ROL']=='ADM'){
+                if($_SESSION["user"]['COD_ROL']=='ADM'){
                     include '../partials/menuAdm.php';
-                }elseif($datosUsuario['COD_ROL']=='EST'){
+                }elseif($_SESSION["user"]['COD_ROL']=='EST'){
                     include '../partials/menuEst.php';
                 }
                 
