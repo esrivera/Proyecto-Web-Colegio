@@ -189,26 +189,26 @@
                                         <div class="form-group">
                                             <label for="codigoEficio">Código de Edificio</label>
                                             <input type="text" class="form-control" id="codigoEficio" name="codigoEdificio"
-                                                value="<?php echo $codEdificio;?>" placeholder="Ingrese el código">
+                                                value="<?php echo $codEdificio;?>" placeholder="Ingrese el código" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="codigoSede">Código de Sede</label>
                                             <input type="text" class="form-control" id="codigoSede" name="codigoSede"
-                                                value="<?php echo $codSede;?>" placeholder="SED01">
+                                                value="<?php echo $codSede;?>" placeholder="SED01" required>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="nombre">Nombre</label>
                                             <input type="text" class="form-control" id="nombre" name="nombre"
                                                 value="<?php echo $nombre;?>"
-                                                placeholder="Ingrese el nombre de la asignatura">
+                                                placeholder="Ingrese el nombre de la asignatura" required>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="creditos">Cantidad de Pisos</label>
                                             <input type="number" class="form-control" id="pisos" name="pisos"
                                                 min=1 value="<?php echo $cantidad_pisos;?>"
-                                                placeholder="Ingrese el número de pisos">
+                                                placeholder="Ingrese el número de pisos" required>
                                         </div>
 
                         
