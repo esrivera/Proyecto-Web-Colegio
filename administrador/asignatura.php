@@ -1,5 +1,5 @@
 <?php
-      include '../service/asignService.php';
+      include '../service/asignaturaService.php';
       
       session_start();
       if(!isset($_SESSION['user'])){
@@ -7,7 +7,7 @@
       }else{
         $accion="Agregar";
         $asignaturas ="";
-        $asignService = new AsignService();
+        $asignaturaService = new AsignaturaService();
 
         $codAsignatura = "";
         $nombre = "";
@@ -15,18 +15,18 @@
         $tipo = "";
         $codNivelEducativo = "";
 
-        $nivelAsignatura=$asignService->getNivelEducativo();
+        $nivelAsignatura=$asignaturaService->getNivelEducativo();
         
         if(isset($_POST["codNivelAsignatura"])){
-          $asignaturas = $asignService->getAsignaturas($_POST["codNivelAsignatura"]);
+          $asignaturas = $asignaturaService->getAsignaturas($_POST["codNivelAsignatura"]);
         }
         if(isset($_POST["accion"]) && $_POST["accion"] == "Agregar"){
-          $asignService->insert($_POST["nivelEducativo"],$_POST["codigoAsignatura"],
+          $asignaturaService->insert($_POST["nivelEducativo"],$_POST["codigoAsignatura"],
                                 $_POST["nombre"],$_POST["creditos"],$_POST["tipoAsignatura"]);
-          $asignaturas = $asignService->getAsignaturas($_POST["nivelEducativo"]);
+          $asignaturas = $asignaturaService->getAsignaturas($_POST["nivelEducativo"]);
 
         }elseif(isset($_GET['actualizar'])){
-         $datosAsignatura = $asignService->findByPk($_GET['actualizar']);
+         $datosAsignatura = $asignaturaService->findByPk($_GET['actualizar']);
           if($datosAsignatura!=null){
               $codAsignatura = $datosAsignatura["COD_ASIGNATURA"];
               $nombre = $datosAsignatura["NOMBRE"];
@@ -37,18 +37,16 @@
 
           $accion="Modificar";
         }elseif(isset($_POST["accion"]) && $_POST["accion"] == "Modificar"){
-
-          $asignService->update($_POST["nivelEducativo"],$_POST["codigoAsignatura"], $_POST["nombre"],$_POST["creditos"],$_POST["tipoAsignatura"]);
-          $asignaturas = $asignService->getAsignaturas($_POST["codNivelAsignatura"]);
+        
+          $asignaturaService->update($_POST["nivelEducativo"],$_POST["codigoAsignatura"], $_POST["nombre"],$_POST["creditos"],$_POST["tipoAsignatura"]);
+          
+          $asignaturas = $asignaturaService->getAsignaturas($_POST["nivelEducativo"]);
         }elseif(isset($_POST["codigoElimAsignatura"])){
           
-          $asignService->delete($_POST["codigoElimAsignatura"]);
-          $asignaturas = $asignService->getAsignaturas($_POST["codNivelAsignatura"]);
+          $asignaturaService->delete($_POST["codigoElimAsignatura"]);
+          $asignaturas = $asignaturaService->getAsignaturas($_POST["codNivelAsignatura"]);
         }
-
       }
-
-  
 ?>
 
 <!DOCTYPE html>
@@ -255,11 +253,11 @@
                                             <label for="tipoAsignatura">Tipo</label>
                                             <select class="form-control" id="tipoAsignatura" name="tipoAsignatura"
                                                 form="formAsignatura" value="<?php echo $tipo;?>">
-                                                <option value='MIN'>Ministerio</option>
+                                                <option value='MIN'>MINISTERIO</option>
 
-                                                <option value='PRO'>Propia</option>
+                                                <option value='PRO'>PROPIA</option>
 
-                                                <option value='OTR'>Otra</option>
+                                                <option value='OTR'>OTRA</option>
                                             </select>
                                         </div>
 

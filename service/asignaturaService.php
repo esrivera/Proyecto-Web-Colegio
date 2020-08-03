@@ -1,7 +1,7 @@
 <?php
 include 'mainService.php';
 
- class AsignService extends MainService {
+ class AsignaturaService extends MainService {
 
     function getNivelEducativo() {
         return $this->conex->query("SELECT * FROM NIVEL_EDUCATIVO ");
