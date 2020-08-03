@@ -57,13 +57,13 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="./infraestructura/edificio.html" class="nav-link ">
+                                    <a href="../administrador/edificio.php" class="nav-link ">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Edificios</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="./infraestructura/aula.html" class="nav-link ">
+                                    <a href="../administrador/aula.php" class="nav-link ">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Aulas</p>
                                     </a>
