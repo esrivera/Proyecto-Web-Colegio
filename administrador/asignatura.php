@@ -33,9 +33,11 @@
               $creditos = $datosAsignatura["CREDITOS"];
               $tipo = $datosAsignatura["TIPO"];
               $codNivelEducativo = $datosAsignatura["COD_NIVEL_EDUCATIVO"];
+              $asignaturas = $asignaturaService->getAsignaturas($codNivelEducativo);
+              
           }
-
           $accion="Modificar";
+
         }elseif(isset($_POST["accion"]) && $_POST["accion"] == "Modificar"){
         
           $asignaturaService->update($_POST["nivelEducativo"],$_POST["codigoAsignatura"], $_POST["nombre"],$_POST["creditos"],$_POST["tipoAsignatura"]);
@@ -134,7 +136,6 @@
                                 </div>
                             </div>
                             <div class="col-sm-5 mx-auto">
-
                                 <div class="form-group row mb-2">
                                     <div class="col-sm-5">
                                         <select class="form-control" id="codNivelAsignatura" name="codNivelAsignatura"
@@ -147,7 +148,7 @@
                                                           ?> selected <?php
                                                         }
                                                       
-                                                      }
+                                                      }elseif($codNivelEducativo!="" && $codNivelEducativo== $nivel["COD_NIVEL_EDUCATIVO"]){echo 'selected'; }
                                                     
                                                     ?> value=<?php echo $nivel["COD_NIVEL_EDUCATIVO"]?>>
                                                 <?php             echo $nivel["NOMBRE"]?>
@@ -192,8 +193,7 @@
                                         while($row = $asignaturas->fetch_assoc()) {
                                         ?>
                                             <tr>
-                                                <td><a
-                                                        href="./asignatura.php?actualizar=<?php echo $row["COD_ASIGNATURA"]?>">
+                                                <td><a href="./asignatura.php?actualizar=<?php echo $row["COD_ASIGNATURA"]?>">
                                                         <?php echo $row["COD_ASIGNATURA"]?> </a></td>
                                                 <td><?php echo $row["NOMBRE"]?></td>
                                                 <td><?php echo $row["CREDITOS"]?></td>
@@ -232,43 +232,52 @@
                                         <div class="form-group">
                                             <label for="codigo">Código</label>
                                             <input type="text" class="form-control" id="codigo" name="codigoAsignatura"
-                                                value="<?php echo $codAsignatura;?>" placeholder="Ingrese el código">
+                                                value="<?php echo $codAsignatura;?>" placeholder="Ingrese el código" required>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="nombre">Nombre</label>
                                             <input type="text" class="form-control" id="nombre" name="nombre"
                                                 value="<?php echo $nombre;?>"
-                                                placeholder="Ingrese el nombre de la asignatura">
+                                                placeholder="Ingrese el nombre de la asignatura" required>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="creditos">Créditos</label>
                                             <input type="number" class="form-control" id="creditos" name="creditos"
-                                                min=1 value="<?php echo $creditos;?>"
-                                                placeholder="Ingrese el número de créditos">
+                                                min=1 max=20 value="<?php echo $creditos;?>"
+                                                placeholder="Ingrese el número de créditos" required>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="tipoAsignatura">Tipo</label>
                                             <select class="form-control" id="tipoAsignatura" name="tipoAsignatura"
                                                 form="formAsignatura" value="<?php echo $tipo;?>">
-                                                <option value='MIN'>MINISTERIO</option>
+                                                <option value='MIN'  <?php if($tipo!="" && $tipo=='MIN'){echo 'selected'; }?> >
+                                                    MINISTERIO</option>
 
-                                                <option value='PRO'>PROPIA</option>
+                                                <option value='PRO'<?php if($tipo!="" && $tipo=='PRO'){echo 'selected'; }?>>
+                                                    PROPIA</option>
 
-                                                <option value='OTR'>OTRA</option>
+                                                <option value='OTR' <?php if($tipo!="" && $tipo=='OTR'){echo 'selected'; }?> >
+                                                    OTRA</option>
                                             </select>
                                         </div>
-
-                                        <div class="form-group">
+                                        <?php $nivelAsignatura=$asignaturaService->getNivelEducativo(); ?>
+                                        <div class="form-group">    
                                             <label for="nivelEducativo">Nivel Educativo</label>
-                                            <select class="form-control" id="nivelEducativo" name="nivelEducativo"
-                                                form="formAsignatura">
-                                                <option value='BAC01'>PRIMERO DE BACHILLERATO</option>
-                                                <option value='BAC02'>SEGUNDO DE BACHILLERATO</option>
-                                                <option value='BAS01'>OCTAVO CURSO</option>
-                                                <option value='BAS02'>NOVENO CURSO</option>
+                                            <select class="form-control" id="nivelEducativo" name="nivelEducativo" form="formAsignatura">
+                                                <?php if ($nivelAsignatura->num_rows > 0) { 
+                                                        while($nivel = $nivelAsignatura->fetch_assoc()) { ?>        
+                                                <option 
+                                                    <?php if($codNivelEducativo!="" && $codNivelEducativo== $nivel["COD_NIVEL_EDUCATIVO"]){echo 'selected'; } ?> 
+                                                    value=<?php echo $nivel["COD_NIVEL_EDUCATIVO"]?>>
+                                                    <?php             echo $nivel["NOMBRE"]?>
+
+                                                </option>
+                                                <?php        }
+                                                }
+                                            ?>
                                             </select>
                                         </div>
 
