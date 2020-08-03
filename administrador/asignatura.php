@@ -232,21 +232,21 @@
                                         <div class="form-group">
                                             <label for="codigo">Código</label>
                                             <input type="text" class="form-control" id="codigo" name="codigoAsignatura"
-                                                value="<?php echo $codAsignatura;?>" placeholder="Ingrese el código">
+                                                value="<?php echo $codAsignatura;?>" placeholder="Ingrese el código" required>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="nombre">Nombre</label>
                                             <input type="text" class="form-control" id="nombre" name="nombre"
                                                 value="<?php echo $nombre;?>"
-                                                placeholder="Ingrese el nombre de la asignatura">
+                                                placeholder="Ingrese el nombre de la asignatura" required>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="creditos">Créditos</label>
                                             <input type="number" class="form-control" id="creditos" name="creditos"
-                                                min=1 value="<?php echo $creditos;?>"
-                                                placeholder="Ingrese el número de créditos">
+                                                min=1 max=20 value="<?php echo $creditos;?>"
+                                                placeholder="Ingrese el número de créditos" required>
                                         </div>
 
                                         <div class="form-group">
