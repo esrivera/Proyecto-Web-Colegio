@@ -1,13 +1,45 @@
 <?php
-      include '../service/edificioService.php';
+    include '../service/edificioService.php';
 
-      session_start();
-      if(!isset($_SESSION['user'])){
-          header('Location: ../login.php');
-      }else{
+    session_start();
+    if(!isset($_SESSION['user'])){
+        header('Location: ../login.php');
+    }else{
         $accion="Agregar";
-       
-      }
+        $edificio= "";
+        $edificioService = new EdificioService();
+
+        $codEdificio= "";
+        $nombre ="";
+        $cantidad_pisos="";
+        $codSede="";
+
+        $sede= $edificioService->getSedes();
+
+        if(isset($_POST["codSede"])){
+            $edificio = $edificioService->getEdificios($_POST["codSede"]);
+        }
+        if(isset($_POST["accion"]) && $_POST["accion"] == "Agregar"){
+            $edificioService->insert($_POST["codigoEdificio"],$_POST["codigoSede"],
+                   $_POST["nombre"],$_POST["pisos"]);
+            $edificio = $edificioService->getEdificios($_POST["codigoSede"]);
+  
+        }elseif(isset($_GET['actualizar'])){
+            $datosEdificio = $edificioService->findByPk($_GET['actualizar']);
+            if($datosEdificio!=null){
+                $codEdificio = $datosEdificio["COD_EDIFICIO"];
+                $nombre = $datosEdificio["NOMBRE"];
+                $cantidad_pisos = $datosEdificio["CANTIDAD_PISOS"];
+                
+                $codSede = $datosEdificio["COD_SEDE"];
+                $edificio = $edificioService->getEdificios($codSede);
+                 
+            }
+             $accion="Modificar";
+        }
+
+
+    }
 ?>
 
 <!DOCTYPE html>
@@ -80,7 +112,7 @@
 
         <div class="content-wrapper">
             <!-- Main content -->
-            <form action="./asignatura.php" method="POST" id="formAsignatura" class="formAsignatura">
+            <form action="./edificio.php" method="POST" id="formEdificio" class="formEdificio">
                 <section class="content">
                     <div class="container-fluid">
                         <div class="row">
@@ -94,23 +126,23 @@
 
                                 <div class="form-group row mb-2">
                                     <div class="col-sm-5">
-                                        <select class="form-control" id="codNivelAsignatura" name="codNivelAsignatura"
-                                            form="formAsignatura">
-                                            <?php   if ($nivelAsignatura->num_rows > 0) { 
-                                                while($nivel = $nivelAsignatura->fetch_assoc()) {
-                                                      ?><option <?php  
-                                                      if(isset($_POST["codNivelAsignatura"])){
-                                                        if($_POST["codNivelAsignatura"] == $nivel["COD_NIVEL_EDUCATIVO"]){
-                                                          ?> selected <?php
+
+                                        <select class="form-control" id="codSede" name="codSede" form="formEdificio">
+                                            <?php   if ($sede->num_rows > 0) { 
+                                                while($resultSede = $sede->fetch_assoc()) {
+                                            ?><option <?php  
+                                                    if(isset($_POST["codSede"])){
+                                                        if($_POST["codSede"] == $resultSede["COD_SEDE"]){
+                                                        ?> selected <?php
                                                         }
-                                                      
-                                                      }
+                                                    }elseif($codSede!="" && $codSede== $resultSede["COD_SEDE"]){echo 'selected'; }
                                                     
-                                                    ?> value=<?php echo $nivel["COD_NIVEL_EDUCATIVO"]?>>
-                                                <?php             echo $nivel["NOMBRE"]?>
+                                                    ?> value=<?php echo $resultSede["COD_SEDE"]?>>
+                                                <?php             echo $resultSede["NOMBRE"]?>
 
                                             </option>
-                                            <?php         }
+                                            <?php
+                                            }
                                             }
                                         ?>
                                         </select>
@@ -119,14 +151,14 @@
                                     <div class="col-sm-2">
                                         <input type="button" name="Buscar" class="btn btn-block btn-primary float-right"
                                             style="padding-bottom: 4px; width:75px;" value="Buscar"
-                                            onclick="buscarAsignaturas();">
+                                            onclick="buscarEdificios();">
                                     </div>
 
                                     <div class="col-sm-2">
                                         <input type="button" name="eliminar"
                                             class="btn btn-block btn-primary float-right"
                                             style="padding-bottom: 4px; width:75px;" value="Eliminar"
-                                            onclick="eliminarAsignatura();">
+                                            onclick="eliminarEdificio();">
                                     </div>
 
                                 </div>
@@ -136,27 +168,26 @@
                                             <tr>
                                                 <th>CÓDIGO</th>
                                                 <th>NOMBRE</th>
-                                                <th>CREDITOS</th>
+                                                <th>CANTIDAD DE PISOS</th>
                                                 <th>TIPO</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
-                                        if($asignaturas!=""){
-                                        if ($asignaturas->num_rows > 0) {
+                                        if($edificio!=""){
+                                        if ($edificio->num_rows > 0) {
                                         // output data of each row
-                                        while($row = $asignaturas->fetch_assoc()) {
+                                        while($row = $edificio->fetch_assoc()) {
                                         ?>
                                             <tr>
                                                 <td><a
-                                                        href="./asignatura.php?actualizar=<?php echo $row["COD_ASIGNATURA"]?>">
-                                                        <?php echo $row["COD_ASIGNATURA"]?> </a></td>
+                                                        href="./edificio.php?actualizar=<?php echo $row["COD_EDIFICIO"]?>">
+                                                        <?php echo $row["COD_EDIFICIO"]?> </a></td>
                                                 <td><?php echo $row["NOMBRE"]?></td>
-                                                <td><?php echo $row["CREDITOS"]?></td>
-                                                <td><?php echo $row["TIPO"]?></td>
-                                                <td><input type="radio" name="codigoElimAsignatura"
-                                                        value="<?php echo $row["COD_ASIGNATURA"]?>"></td>
+                                                <td><?php echo $row["CANTIDAD_PISOS"]?></td>
+                                                <td><input type="radio" name="codigoElimEdificio"
+                                                        value="<?php echo $row["COD_EDIFICIO"]?>"></td>
                                             </tr>
                                             <?php 
                                         }
@@ -187,14 +218,27 @@
 
                                     <div class="card-body">
                                         <div class="form-group">
-                                            <label for="codigoEficio">Código de Edificio</label>
-                                            <input type="text" class="form-control" id="codigoEficio" name="codigoEdificio"
-                                                value="<?php echo $codEdificio;?>" placeholder="Ingrese el código" required>
+                                            <label for="codigoEdificio">Código de Edificio</label>
+                                            <input type="text" class="form-control" id="codigoEdificio"
+                                                name="codigoEdificio" value="<?php echo $codEdificio;?>"
+                                                placeholder="Ingrese el código" maxlength="5" required>
                                         </div>
+                                        <?php $sede=$edificioService->getSedes(); ?>
                                         <div class="form-group">
-                                            <label for="codigoSede">Código de Sede</label>
-                                            <input type="text" class="form-control" id="codigoSede" name="codigoSede"
-                                                value="<?php echo $codSede;?>" placeholder="SED01" required>
+                                            <label for="sede">Sede</label>
+                                            <select class="form-control" id="sede" name="codigoSede" form="formEdificio" required>
+                                                <?php if ($sede->num_rows > 0) { 
+                                                        while($resultSede = $sede->fetch_assoc()) { ?>
+                                                <option
+                                                    <?php if($codSede!="" && $codSede== $resultSede["COD_SEDE"]){echo 'selected'; } ?>
+                                                    value=<?php echo $resultSede["COD_SEDE"]?>>
+                                                    <?php             echo $resultSede["NOMBRE"]?>
+
+                                                </option>
+                                                <?php        }
+                                                }
+                                            ?>
+                                            </select>
                                         </div>
 
                                         <div class="form-group">
@@ -206,14 +250,10 @@
 
                                         <div class="form-group">
                                             <label for="creditos">Cantidad de Pisos</label>
-                                            <input type="number" class="form-control" id="pisos" name="pisos"
-                                                min=1 value="<?php echo $cantidad_pisos;?>"
+                                            <input type="number" class="form-control" id="pisos" name="pisos" min=1 max=10
+                                                value="<?php echo $cantidad_pisos;?>"
                                                 placeholder="Ingrese el número de pisos" required>
                                         </div>
-
-                        
-
-                    
 
                                     </div>
                                     <!-- /.card-body -->
@@ -245,12 +285,12 @@
 
     <!-- Page specific script -->
     <script>
-    function buscarAsignaturas() {
-        document.getElementById("formAsignatura").submit();
+    function buscarEdificios() {
+        document.getElementById("formEdificio").submit();
     }
 
-    function eliminarAsignatura() {
-        document.getElementById("formAsignatura").submit();
+    function eliminarEdificio() {
+        document.getElementById("formEdificio").submit();
     }
     </script>
 </body>
