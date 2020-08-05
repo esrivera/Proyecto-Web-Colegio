@@ -25,7 +25,6 @@
         
         if(isset($_POST["codNivelAsignatura"])){
           $asignaturas = $asignacionService->getAsignaturas($_POST["codNivelAsignatura"]);
-          
         }
         if(isset($_POST["accion"]) && $_POST["accion"] == "Agregar" && isset($_POST["codAsigantura"])){
           $asignacionService->insert($_POST["codNivelAsignatura"],$_POST["codAsigantura"],
@@ -44,7 +43,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Asignar Docentes</title>
+    <title>Gestión de Cursos</title>
     <!-- CALL HEAD STYLES -->
     <?php include '../partials/head.php';?>
 
@@ -67,7 +66,7 @@
             <ul class="navbar-nav ml-auto">
                 <!-- Log Out-->
                 <li class="nav-item dropdown">
-                    <a href="../service/logout.php" class="dropdown-item dropdown-footer">                        
+                    <a href="../service/logout.php" class="dropdown-item dropdown-footer">
                         Cerrar Sesión
                         <span class="badge badge-warning navbar-badge"></span>
                     </a>
@@ -109,209 +108,204 @@
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
-            <section class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1>Gestión Asignatura</h1>
-                        </div>
-                    </div>
-                </div><!-- /.container-fluid -->
-            </section>
-
-            <!-- Main content -->
             <!-- Main content -->
             <form action="./asignacion.php" method="POST" id="formAsignacion" class="formAsignacion">
                 <section class="content">
                     <div class="container-fluid">
+                        <div class="container-fluid">
+                            <div class="col mb-1">
+                                <h1 style="text-align: center;">Generación de Cursos</h1>
+                            </div>
+                        </div>
+
                         <div class="row">
-                            <!-- left column -->
-                            <div class="col-md-6 mx-auto">
-                                <div class="card-primary card card-header">
-                                    <label for="codPeriodoLectivo" class="card-title">Asignación de docentes</label>
-                                </div>
-                                <div class="form-group">
-
-
-                                    
-                                </div>
-
-
-                                
-
-
-                                    <!-- general form elements -->
-                                    <div class="card card-primary">
-                                        <div class="card-header">
-                                            <h3 class="card-title">Asignacion Docentes</h3>
+                            <div class="col-sm-4">
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Asignacion Docentes</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-7">
+                                                <h5 class="card-title">Seleccione el periodo</h5> <br>
+                                            </div>
                                         </div>
-                                        <!-- /.card-header -->
-                                        <!-- form start -->
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <select class="form-control" id="codPeriodoLectivo"
-                                                    name="codPeriodoLectivo" form="formAsignacion">
+
+                                        <div class="row">
+                                            <div class="col-sm-8">
+                                                <select class="form-control" id="codPeriodoLectivo" name="codPeriodoLectivo" form="formAsignacion">
                                                     <?php   if ($periodo->num_rows > 0) { 
-                                                while($nivel = $periodo->fetch_assoc()) {
-                                                      ?><option <?php  
-                                                      
-                                                    
-                                                    ?> value=<?php echo $nivel["COD_PERIODO_LECTIVO"]?>>
+                                                    while($nivel = $periodo->fetch_assoc()) {
+                                                        ?><option <?php  
+                                                        ?> value=<?php echo $nivel["COD_PERIODO_LECTIVO"]?>>
                                                         <?php             echo $nivel["COD_PERIODO_LECTIVO"]?>
 
                                                     </option>
                                                     <?php         }
-                                                 }
-                                                ?>
-                                                </select>
-                                            </div>
-
-                                            <div class="row">
-                                                <select class="form-control" id="codNivelAsignatura" name="codNivelAsignatura" form="formAsignacion">
-                                                    <?php   if ($nivelAsignatura->num_rows > 0) { 
-                                                     while($nivel = $nivelAsignatura->fetch_assoc()) {
-                                                      ?><option <?php  
-                                                      if(isset($_POST["codNivelAsignatura"])){
-                                                        if($_POST["codNivelAsignatura"] == $nivel["COD_NIVEL_EDUCATIVO"]){
-                                                          ?> selected <?php
-                                                        }
-                                                      
-                                                      }
-                                                    
-                                                        ?> value=<?php echo $nivel["COD_NIVEL_EDUCATIVO"]?>>
-                                                    <?php             echo $nivel["NOMBRE"]?>
-
-                                                    </option>
-                                                        <?php         }
-                                                     }
+                                                    }
                                                     ?>
                                                 </select>
-                                                <div class="">
-                                                <input type="button" name="Buscar"
-                                                class="btn btn-block btn-primary float-right"
-                                                style="padding-bottom: 4px; width:75px;" value="Buscar"
-                                                onclick="buscarAsignaturas();">
-                                                </div>
                                             </div>
+                                        </div>
 
-                                            <div class="row">
-                                                <select class="form-control" id="codAsigantura" name="codAsigantura" form="formAsignacion">
-                                                    <?php
-                                                        if($asignaturas!=""){
-                                                            echo 'eeeeeeeeeeeoooooooooas';
-                                                        if ($asignaturas->num_rows > 0) {
-                                                        // output data of each row
-                                                        while($nivel = $asignaturas->fetch_assoc()) {
-                                                            ?><option value=<?php echo $nivel["COD_ASIGNATURA"]?>>
+                                        <div class="row">
+                                            <div class="col-sm-7">
+                                                <h5 class="card-title">Seleccione el nivel educativo</h5> <br>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-8">
+                                                <select class="form-control" id="codNivelAsignatura"
+                                                    name="codNivelAsignatura" form="formAsignacion">
+                                                    <?php   if ($nivelAsignatura->num_rows > 0) { 
+                                                    while($nivel = $nivelAsignatura->fetch_assoc()) {
+                                                        ?><option <?php  
+                                                        if(isset($_POST["codNivelAsignatura"])){
+                                                            if($_POST["codNivelAsignatura"] == $nivel["COD_NIVEL_EDUCATIVO"]){
+                                                            ?> selected <?php
+                                                            }
+                                                        
+                                                        }elseif($codNivelEducativo!="" && $codNivelEducativo== $nivel["COD_NIVEL_EDUCATIVO"]){echo 'selected'; }
+                                                        
+                                                        ?> value=<?php echo $nivel["COD_NIVEL_EDUCATIVO"]?>>
                                                         <?php             echo $nivel["NOMBRE"]?>
 
                                                     </option>
                                                     <?php         }
-                                                        ?>
-
-                                                    <?php 
-                                                        }
-                                                    }else{
-                                                        echo 'ola';
                                                     }
-
-                                                ?>
+                                                    ?>
                                                 </select>
                                             </div>
 
-                                            <div class="row">
-                                                <select class="form-control" id="codParalelo" name="codParalelo" form="formAsignacion">
+                                            <div class="col-sm-3">
+                                                <input type="button" name="Buscar"
+                                                    class="btn btn-block btn-primary float-right"
+                                                    style="padding-bottom: 4px; width:75px;" value="Buscar"
+                                                    onclick="buscarAsignaturas();">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-7">
+                                                <h5 class="card-title">Seleccione la asignatura</h5> <br>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-8">  
+                                                <select class="form-control" id="codAsigantura" name="codAsigantura"  form="formAsignacion">
                                                     <?php
-                                                        if($paraleo!=""){
-                                                            echo 'eeeeeeeeeeeoooooooooas';
-                                                        if ($paraleo->num_rows > 0) {
-                                                        // output data of each row
-                                                        while($datParalelo = $paraleo->fetch_assoc()) {
-                                                            ?><option value=<?php echo $datParalelo["COD_PARALELO"]?>>
-                                                        <?php             echo $datParalelo["NOMBRE"]?>
+                                                        if($asignaturas!=""){
+                                                        if ($asignaturas->num_rows > 0) {
+                                                            // output data of each row
+                                                        while($nivel = $asignaturas->fetch_assoc()) {
+                                                                ?><option value=<?php echo $nivel["COD_ASIGNATURA"]?>>
+                                                        <?php             echo $nivel["NOMBRE"]?>
 
                                                     </option>
                                                     <?php         }
-                                                        ?>
+                                                            ?>
 
                                                     <?php 
+                                                            }
+                                                        }else{
+                                                            echo "<option value = 'null'> RELACICE LA BUSQUEDA </option> ";
                                                         }
-                                                    }else{
-                                                        echo 'ola';
-                                                    }
 
-                                                ?>
+                                                    ?>
                                                 </select>
                                             </div>
+                                        </div>
 
+                                        <div class="row">
+                                            <div class="col-sm-7">
+                                                <h5 class="card-title">Seleccione el Docente</h5> <br>
+                                            </div>
+                                        </div>
 
-                                            <div class="row">
-                                                <select class="form-control" id="codPersona" name="codPersona" form="formAsignacion">
+                                        <div class="row">
+                                            <div class="col-sm-8">  
+                                                <select class="form-control" id="codPersona" name="codPersona"   form="formAsignacion">
                                                     <?php
-                                                        if($docente!=""){
-                                                            echo 'eeeeeeeeeeeoooooooooas';
-                                                        if ($docente->num_rows > 0) {
-                                                        // output data of each row
-                                                        while($datPersona = $docente->fetch_assoc()) {
-                                                            
+                                                            if($docente!=""){
+                                                                echo 'eeeeeeeeeeeoooooooooas';
+                                                            if ($docente->num_rows > 0) {
+                                                            // output data of each row
+                                                            while($datPersona = $docente->fetch_assoc()) {
+                                                                
 
-                                                            ?><option value=<?php echo $datPersona["COD_PERSONA"]?>>
+                                                                ?><option value=<?php echo $datPersona["COD_PERSONA"]?>>
                                                         <?php             echo $datPersona["NOMBRE"]; echo " "; echo $datPersona["APELLIDO"];?>
 
                                                     </option>
                                                     <?php         }
-                                                        ?>
+                                                            ?>
 
                                                     <?php 
+                                                            }
+                                                        }else{
+                                                            echo 'ola';
                                                         }
-                                                    }else{
-                                                        echo 'ola';
-                                                    }
 
-                                                ?>
+                                                    ?>
                                                 </select>
                                             </div>
-                                            <div class="row">
-                                                <select class="form-control" id="codAula" name="codAula" form="formAsignacion">
-                                                    <?php
-                                                        if($aula!=""){
-                                                            echo 'eeeeeeeeeeeoooooooooas';
-                                                        if ($aula->num_rows > 0) {
-                                                        // output data of each row
-                                                        while($datAulas = $aula->fetch_assoc()) {
-                                                            
+                                        </div>
 
-                                                            ?><option value=<?php echo $datAulas["COD_AULA"]?>>
+                                        <div class="row">
+                                            <div class="col-sm-7">
+                                                <h5 class="card-title">Seleccione la asignatura</h5> <br>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-8">  
+                                                <select class="form-control" id="codAula" name="codAula"
+                                                    form="formAsignacion">
+                                                    <?php
+                                                            if($aula!=""){
+                                                                echo 'eeeeeeeeeeeoooooooooas';
+                                                            if ($aula->num_rows > 0) {
+                                                            // output data of each row
+                                                            while($datAulas = $aula->fetch_assoc()) {
+                                                                
+
+                                                                ?><option value=<?php echo $datAulas["COD_AULA"]?>>
                                                         <?php             echo $datAulas["NOMBRE"];?>
 
                                                     </option>
                                                     <?php         }
-                                                        ?>
+                                                            ?>
 
                                                     <?php 
+                                                            }
+                                                        }else{
+                                                            echo 'ola';
                                                         }
-                                                    }else{
-                                                        echo 'ola';
-                                                    }
 
-                                                ?>
+                                                    ?>
                                                 </select>
                                             </div>
                                         </div>
-                                        <!-- /.card-body -->
-                                        <div class="card-footer">
-                                            <input type="submit" class="btn btn-primary btn-block" name="accion"
-                                                value="<?php echo $accion;?>">
-                                        </div>
-
                                     </div>
-                                    <!-- /.card -->
+
+                                    <div class="card-footer">
+                                        <input type="submit" class="btn btn-primary btn-block" name="accion"
+                                            value="<?php echo $accion;?>">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-7">
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Asignacion Docentes</h3>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                </section>
+                    <section>
             </form>
             <!-- /.content -->
         </div>
