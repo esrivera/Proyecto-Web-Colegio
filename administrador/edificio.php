@@ -46,7 +46,6 @@
         }elseif(isset($_POST["codigoElimEdificio"])){
           
             $edificioService->delete($_POST["codigoElimEdificio"]);
-            print_r($_POST["codigoElimEdificio"]);
 
             $edificio = $edificioService->getEdificios($_POST["codigoSede"]);
           }
@@ -198,7 +197,7 @@
                                                         <?php echo $row["COD_EDIFICIO"]?> </a></td>
                                                 <td><?php echo $row["NOMBRE"]?></td>
                                                 <td><?php echo $row["CANTIDAD_PISOS"]?></td>
-                                                <td><input type="radio" name="codigoElimEdificio"
+                                                <td><input type="radio"  class="form-check-input" name="codigoElimEdificio"
                                                         value="<?php echo $row["COD_EDIFICIO"]?>"></td>
                                             </tr>
                                             <?php 
@@ -232,6 +231,7 @@
                                         <div class="form-group">
                                             <label for="codigoEdificio">Código de Edificio</label>
                                             <input type="text" class="form-control" id="codigoEdificio"
+                                            <?php if(isset($_GET['actualizar'])) echo 'readonly'?>
                                                 name="codigoEdificio" value="<?php echo $codEdificio;?>"
                                                 placeholder="Ingrese el código" maxlength="5" required>
                                         </div>
