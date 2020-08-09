@@ -25,6 +25,20 @@ include 'mainService.php';
                     return null;
                 }
         }
+        function update($codigoEdificio,$codigoSede,$nombre,$pisos){
+
+            $stmt = $this->conex->prepare("UPDATE EDIFICIO SET COD_SEDE = ?, NOMBRE= ?, CANTIDAD_PISOS = ? WHERE COD_EDIFICIO = ?");
+            $stmt->bind_param('ssis', $codigoSede,$nombre,$pisos,$codigoEdificio);
+            $stmt->execute();
+            $stmt->close();
+        }
+        function delete($codigoEdificio){
+            $stmt = $this->conex->prepare("DELETE FROM  EDIFICIO  WHERE COD_EDIFICIO = ?");
+            $stmt->bind_param('s', $codigoEdificio);
+            $stmt->execute();
+            $stmt->close();
+        }
+
     }
 
 ?>

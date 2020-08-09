@@ -15,31 +15,43 @@
         $codSede="";
 
         $sede= $edificioService->getSedes();
+        //print_r($sede);
 
         if(isset($_POST["codSede"])){
             $edificio = $edificioService->getEdificios($_POST["codSede"]);
         }
         if(isset($_POST["accion"]) && $_POST["accion"] == "Agregar"){
             $edificioService->insert($_POST["codigoEdificio"],$_POST["codigoSede"],
-                   $_POST["nombre"],$_POST["pisos"]);
+                $_POST["nombre"],$_POST["pisos"]);
             $edificio = $edificioService->getEdificios($_POST["codigoSede"]);
-  
+
         }elseif(isset($_GET['actualizar'])){
             $datosEdificio = $edificioService->findByPk($_GET['actualizar']);
             if($datosEdificio!=null){
                 $codEdificio = $datosEdificio["COD_EDIFICIO"];
                 $nombre = $datosEdificio["NOMBRE"];
                 $cantidad_pisos = $datosEdificio["CANTIDAD_PISOS"];
-                
+                    
                 $codSede = $datosEdificio["COD_SEDE"];
                 $edificio = $edificioService->getEdificios($codSede);
-                 
+
             }
-             $accion="Modificar";
-        }
+            $accion="Modificar";
+        }elseif(isset($_POST["accion"]) && $_POST["accion"] == "Modificar"){
+        
+            $edificioService->update($_POST["codigoEdificio"],$_POST["codigoSede"],
+            $_POST["nombre"],$_POST["pisos"]);
+            
+            $edificio = $edificioService->getEdificios($_POST["codigoSede"]);
+        }elseif(isset($_POST["codigoElimEdificio"])){
+          
+            $edificioService->delete($_POST["codigoElimEdificio"]);
+            print_r($_POST["codigoElimEdificio"]);
 
-
+            $edificio = $edificioService->getEdificios($_POST["codigoSede"]);
+          }
     }
+    
 ?>
 
 <!DOCTYPE html>
@@ -169,7 +181,7 @@
                                                 <th>CÓDIGO</th>
                                                 <th>NOMBRE</th>
                                                 <th>CANTIDAD DE PISOS</th>
-                                                <th>TIPO</th>
+                                                <th>ACCIÓN</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -226,7 +238,8 @@
                                         <?php $sede=$edificioService->getSedes(); ?>
                                         <div class="form-group">
                                             <label for="sede">Sede</label>
-                                            <select class="form-control" id="sede" name="codigoSede" form="formEdificio" required>
+                                            <select class="form-control" id="sede" name="codigoSede" form="formEdificio"
+                                                required>
                                                 <?php if ($sede->num_rows > 0) { 
                                                         while($resultSede = $sede->fetch_assoc()) { ?>
                                                 <option
@@ -250,8 +263,8 @@
 
                                         <div class="form-group">
                                             <label for="creditos">Cantidad de Pisos</label>
-                                            <input type="number" class="form-control" id="pisos" name="pisos" min=1 max=10
-                                                value="<?php echo $cantidad_pisos;?>"
+                                            <input type="number" class="form-control" id="pisos" name="pisos" min=1
+                                                max=10 value="<?php echo $cantidad_pisos;?>"
                                                 placeholder="Ingrese el número de pisos" required>
                                         </div>
 
@@ -294,3 +307,5 @@
     }
     </script>
 </body>
+
+</html>
