@@ -11,14 +11,23 @@
         $calificaciones="";
         $codAsignatura="";
         $asignaturas="";
+        $calificacionesQ1 = "";
+        $calificacionesQ2 = "";
+        $periodo = "";
             if(isset($_POST["accion"]) && $_POST["accion"] == "Buscar"){
                 $calificaciones =$alumnoService->getAsignaturasCalificaciones($_POST['periodo'],$_SESSION["user"]['COD_PERSONA']);
             }elseif(isset($_POST["ver"])){
                 $codAsignatura = $_POST["ver"];
-                echo $_POST['periodo'];
-                echo $_SESSION["user"]['COD_PERSONA'];
-                echo $codAsignatura;
+                $periodo = $_POST['periodo'];
+                $asignaturas = $alumnoService->getAsignaturas($_POST['periodo'],$_SESSION["user"]['COD_PERSONA']);                
+                $calificacionesQ1 = $alumnoService->getCalificaciones($_POST['periodo'],$_SESSION["user"]['COD_PERSONA'],$_POST["ver"],1);
+                $calificacionesQ2 = $alumnoService->getCalificaciones($_POST['periodo'],$_SESSION["user"]['COD_PERSONA'],$_POST["ver"],2);
+            }elseif(isset($_POST["materia"])){
+                $periodo =$_POST["periodo"];
+                $codAsignatura = $_POST["materia"];
                 $asignaturas = $alumnoService->getAsignaturas($_POST['periodo'],$_SESSION["user"]['COD_PERSONA']);
+                $calificacionesQ1 = $alumnoService->getCalificaciones($_POST['periodo'],$_SESSION["user"]['COD_PERSONA'],$_POST["materia"],1);
+                $calificacionesQ2 = $alumnoService->getCalificaciones($_POST['periodo'],$_SESSION["user"]['COD_PERSONA'],$_POST["materia"],2); 
             }
                               
       }
@@ -99,6 +108,7 @@
         <div class="content-wrapper">
             <!-- Main content -->
             <form action="./calificaciones.php" method="POST" id="formCalificaciones" class="formCalificaciones">
+            <input type="hidden" name="periodo" value = "<?php echo $periodo?>">
                 <section class="content">
                     <div class="container-fluid">
                         <!-- /.col-md-6 -->
@@ -107,7 +117,8 @@
                         <div class="container">
                             <div class="container-fluid">
                                 <div class="col mb-1">
-                                    <br> <h1 style="text-align: center;">Calificaciones</h1>
+                                    <br>
+                                    <h1 style="text-align: center;">Calificaciones</h1>
                                 </div>
                             </div>
                             <div class="row">
@@ -210,7 +221,8 @@
                         <div class="container">
                             <div class="container-fluid">
                                 <div class="col mb-1">
-                                    <br><h2 style="text-align: center;">Calificaciones por Materia</h2>
+                                    <br>
+                                    <h2 style="text-align: center;">Calificaciones por Materia</h2>
                                 </div>
                             </div>
                             <div class="row">
@@ -218,7 +230,8 @@
                                     <!-- select -->
                                     <div class="form-group">
                                         <label>Materia</label>
-                                        <select class="form-control" form="formCalificaciones" id="materia" name="materia">
+                                        <select class="form-control" form="formCalificaciones" id="materia"
+                                            name="materia">
                                             <?php
                                                 if ($asignaturas->num_rows > 0) { 
                                                     while($materia = $asignaturas->fetch_assoc()) { ?>
@@ -235,8 +248,9 @@
                                 <div class="col-lg-2 col-4">
                                     <br>
                                     <div class="form-group">
-                                        <input type="submit" value="Buscar Asignatura" class="btn btn-block btn-primary"
-                                        style="padding: 8px 7px;" name="accion">
+                                            <input type="button" name="accion" class="btn btn-block btn-primary float-right"
+                                            style="padding-bottom: 4px; width:75px;" value="Buscar Asignaturas"
+                                            onclick="buscarAsignaturas();">
                                     </div>
 
                                 </div>
@@ -246,49 +260,59 @@
                                 <div class="col-12">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h3 class="card-title">Listado de Asignaturas</h3>
+                                            <h3 class="card-title" style="bold">Quimestre 1</h3>
                                         </div>
                                         <!-- /.card-header -->
-                                        <div class="card-body table-responsive p-0" style="height: 400px;">
+                                        <div class="card-body table-responsive p-0" style="height: 500px;">
                                             <table class="table table-head-fixed text-nowrap">
                                                 <thead>
                                                     <tr>
-                                                        <th>Asignatura</th>
-                                                        <th>Quimestre 1</th>
-                                                        <th>Quimestre 2</th>
-                                                        <th>Promedio</th>
-                                                        <th>Ver</th>
+                                                        <th>Descripcion</th>
+                                                        <th>Nota</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                
+                                                    <?php
+                                                        if($calificacionesQ1==""){
+                                                            echo "<td colspan = '5'> No hay Datos</td>";
+                                                        }else{
+                                                            if($calificacionesQ1->num_rows > 0) {
+                                                                while($cal1 = $calificacionesQ1->fetch_assoc()) {?>
+                                                                    <tr>
+                                                                     <td> <?php echo $cal1["DETALLE_TAREA"]  ?></td>
+                                                                     <td> <?php  echo $cal1["NOTA1"] ?></td>
+                                                                    </tr>
+                                                    <?php
+                                                                }
+                                                            }
+                                                        }
+                                                    ?>
+
+                                                </tbody>
+                                            </table>
+                                            <div class="card-header">
+                                                <h3 class="card-title" style="bold">Quimestre 2</h3>
+                                            </div>
+                                            <table class="table table-head-fixed text-nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Descripcion</th>
+                                                        <th>Nota</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
 
                                                     <?php
-                                                        if($calificaciones==""){
+                                                        if($calificacionesQ2==""){
                                                             echo "<td colspan = '5'> No hay Datos</td>";
                                                         }else{
-                                                            if($calificaciones->num_rows > 0) {
-                                                                while($row = $calificaciones->fetch_assoc()) {
-                                                                    if ($row["COD_QUIMESTRE"]=='1'){ 
-                                                                    ?>
-                                                    <tr>
-                                                        <td><?php echo $row["NOMBRE"]?></td>
-                                                        <td><?php echo $row["COD_QUIMESTRE"]?></td>
-                                                        <?php  
-                                                                    }elseif($row["COD_QUIMESTRE"]=='2'){
-                                                                    ?>
-                                                        <td><?php echo $row["COD_QUIMESTRE"]?></td>
-                                                        <td> PROMEDIO</td>
-                                                        <td>
-                                                            <button value=<?php echo $row["COD_ASIGNATURA"]?> name="ver"
-                                                                title="ver" class="btn btn-primary"
-                                                                style="padding: 2px 5px;">
-                                                                <i class="nav-icon fas fa-edit"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                    <?php
-
-                                                                    }?>
+                                                            if($calificacionesQ2->num_rows > 0) {
+                                                                while($cal2 = $calificacionesQ2->fetch_assoc()) {?>
+                                                                    <tr>
+                                                                     <td> <?php echo $cal2["DETALLE_TAREA"]  ?></td>
+                                                                     <td> <?php  echo $cal2["NOTA1"] ?></td>
+                                                                    </tr>
                                                     <?php
                                                                 }
                                                             }
@@ -328,7 +352,11 @@
         <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
-
+    <script>
+        function buscarAsignaturas() {
+        document.getElementById("formCalificaciones").submit();
+    }
+    </script>
     <!-- Page specific script -->
 </body>
 
