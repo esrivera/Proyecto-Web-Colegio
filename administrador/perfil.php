@@ -99,6 +99,10 @@
                     include '../partials/menuAdm.php';
                 }elseif($_SESSION["user"]['COD_ROL']=='EST'){
                     include '../partials/menuEst.php';
+                }elseif($_SESSION["user"]['COD_ROL']=='DOC'){
+                    include '../partials/menuDoc.php';
+                }elseif($_SESSION["user"]['COD_ROL']=='REP'){
+                    include '../partials/menuRep.php';
                 }
                 
             ?>
