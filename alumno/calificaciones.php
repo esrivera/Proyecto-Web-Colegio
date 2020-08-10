@@ -9,12 +9,16 @@
         $periodos="";
         $periodos=$alumnoService->getPeriodos();
         $calificaciones="";
+        $codAsignatura="";
+        $asignaturas="";
             if(isset($_POST["accion"]) && $_POST["accion"] == "Buscar"){
-                //echo $_POST['periodo'];
-                //echo $_SESSION["user"]['COD_PERSONA'];
                 $calificaciones =$alumnoService->getAsignaturasCalificaciones($_POST['periodo'],$_SESSION["user"]['COD_PERSONA']);
-            }elseif(isset($_POST["ver"]) && $_POST["ver"] == "ver"){
-                header('Location: verCalificaciones.php');
+            }elseif(isset($_POST["ver"])){
+                $codAsignatura = $_POST["ver"];
+                echo $_POST['periodo'];
+                echo $_SESSION["user"]['COD_PERSONA'];
+                echo $codAsignatura;
+                $asignaturas = $alumnoService->getAsignaturas($_POST['periodo'],$_SESSION["user"]['COD_PERSONA']);
             }
                               
       }
@@ -98,10 +102,12 @@
                 <section class="content">
                     <div class="container-fluid">
                         <!-- /.col-md-6 -->
+                        <?php 
+                        if($codAsignatura==""){ ?>
                         <div class="container">
                             <div class="container-fluid">
                                 <div class="col mb-1">
-                                    <h1 style="text-align: center;">Calificaciones</h1>
+                                    <br> <h1 style="text-align: center;">Calificaciones</h1>
                                 </div>
                             </div>
                             <div class="row">
@@ -162,24 +168,26 @@
                                                                 while($row = $calificaciones->fetch_assoc()) {
                                                                     if ($row["COD_QUIMESTRE"]=='1'){ 
                                                                     ?>
-                                                                        <tr>
-                                                                            <td><?php echo $row["NOMBRE"]?></td>
-                                                                            <td><?php echo $row["COD_QUIMESTRE"]?></td>
-                                                                    <?php  
+                                                    <tr>
+                                                        <td><?php echo $row["NOMBRE"]?></td>
+                                                        <td><?php echo $row["COD_QUIMESTRE"]?></td>
+                                                        <?php  
                                                                     }elseif($row["COD_QUIMESTRE"]=='2'){
                                                                     ?>
-                                                                            <td><?php echo $row["COD_QUIMESTRE"]?></td>
-                                                                            <td> PROMEDIO</td>
-                                                                            <td>
-                                                                            <button value="ver" name="ver" title = "ver" class = "btn btn-primary" style="padding: 2px 5px;">
-                                                                                <i class="nav-icon fas fa-edit"></i>
-                                                                            </button>
-                                                                            </td>
-                                                                        </tr> 
-                                                                    <?php
+                                                        <td><?php echo $row["COD_QUIMESTRE"]?></td>
+                                                        <td> PROMEDIO</td>
+                                                        <td>
+                                                            <button value=<?php echo $row["COD_ASIGNATURA"]?> name="ver"
+                                                                title="ver" class="btn btn-primary"
+                                                                style="padding: 2px 5px;">
+                                                                <i class="nav-icon fas fa-edit"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    <?php
 
                                                                     }?>
-                                                                <?php
+                                                    <?php
                                                                 }
                                                             }
                                                         }
@@ -196,7 +204,113 @@
                                 <!-- /.card -->
                             </div>
                         </div>
-                        <!-- /.row -->
+                        <?php
+                        
+                        }else{ ?>
+                        <div class="container">
+                            <div class="container-fluid">
+                                <div class="col mb-1">
+                                    <br><h2 style="text-align: center;">Calificaciones por Materia</h2>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 col-4">
+                                    <!-- select -->
+                                    <div class="form-group">
+                                        <label>Materia</label>
+                                        <select class="form-control" form="formCalificaciones" id="materia" name="materia">
+                                            <?php
+                                                if ($asignaturas->num_rows > 0) { 
+                                                    while($materia = $asignaturas->fetch_assoc()) { ?>
+                                            <option value=<?php echo $materia['COD_ASIGNATURA']; ?>>
+                                                <?php echo $materia['NOMBRE']; ?>
+                                            </option> <?php             
+                                                    }
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2 col-4">
+                                    <br>
+                                    <div class="form-group">
+                                        <input type="submit" value="Buscar Asignatura" class="btn btn-block btn-primary"
+                                        style="padding: 8px 7px;" name="accion">
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- /.row -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Listado de Asignaturas</h3>
+                                        </div>
+                                        <!-- /.card-header -->
+                                        <div class="card-body table-responsive p-0" style="height: 400px;">
+                                            <table class="table table-head-fixed text-nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Asignatura</th>
+                                                        <th>Quimestre 1</th>
+                                                        <th>Quimestre 2</th>
+                                                        <th>Promedio</th>
+                                                        <th>Ver</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    <?php
+                                                        if($calificaciones==""){
+                                                            echo "<td colspan = '5'> No hay Datos</td>";
+                                                        }else{
+                                                            if($calificaciones->num_rows > 0) {
+                                                                while($row = $calificaciones->fetch_assoc()) {
+                                                                    if ($row["COD_QUIMESTRE"]=='1'){ 
+                                                                    ?>
+                                                    <tr>
+                                                        <td><?php echo $row["NOMBRE"]?></td>
+                                                        <td><?php echo $row["COD_QUIMESTRE"]?></td>
+                                                        <?php  
+                                                                    }elseif($row["COD_QUIMESTRE"]=='2'){
+                                                                    ?>
+                                                        <td><?php echo $row["COD_QUIMESTRE"]?></td>
+                                                        <td> PROMEDIO</td>
+                                                        <td>
+                                                            <button value=<?php echo $row["COD_ASIGNATURA"]?> name="ver"
+                                                                title="ver" class="btn btn-primary"
+                                                                style="padding: 2px 5px;">
+                                                                <i class="nav-icon fas fa-edit"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    <?php
+
+                                                                    }?>
+                                                    <?php
+                                                                }
+                                                            }
+                                                        }
+                                                    ?>
+
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+                                <!-- /.card -->
+                            </div>
+                        </div>
+                        <?php
+                        }
+                        ?>
+
+                        <!-- /.rowsss -->
                     </div><!-- /.container-fluid -->
 
 
