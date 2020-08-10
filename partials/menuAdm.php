@@ -22,7 +22,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="alumno.html  " class="nav-link">
+                                    <a href="alumno.html" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Alumnos</p>
                                     </a>
@@ -95,6 +95,24 @@
                                     <a href="../administrador/asignacion.php" class="nav-link ">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Asignar Docentes</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- mmmm -->
+                        <li class="nav-item has-treeview">
+                            <a href="" class="nav-link">
+                                <i class="nav-icon fas fa-file-alt"></i>
+                                <p>
+                                    Géstion Matrícula
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="../administrador/matricula.php" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Asignación Matrícula </p>
                                     </a>
                                 </li>
                             </ul>
