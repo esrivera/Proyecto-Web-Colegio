@@ -178,16 +178,17 @@
                                                         }else{
                                                             if($calificaciones->num_rows > 0) {
                                                                 while($row = $calificaciones->fetch_assoc()) {
-                                                                    if ($row["COD_QUIMESTRE"]=='1'){ 
+                                                                    if ($row["COD_QUIMESTRE"]=='1'){
+                                                                        $prom1= $row["NOTA15"];
                                                                     ?>
                                                     <tr>
                                                         <td><?php echo $row["NOMBRE"]?></td>
-                                                        <td><?php echo $row["COD_QUIMESTRE"]?></td>
+                                                        <td><?php echo $row["NOTA15"]?></td>
                                                         <?php  
                                                                     }elseif($row["COD_QUIMESTRE"]=='2'){
                                                                     ?>
-                                                        <td><?php echo $row["COD_QUIMESTRE"]?></td>
-                                                        <td> PROMEDIO</td>
+                                                        <td><?php echo $row["NOTA15"]?></td>
+                                                        <td> <?php echo ($row["NOTA15"] + $prom1 )/2?> </td>
                                                         <td>
                                                             <button value=<?php echo $row["COD_ASIGNATURA"]?> name="ver"
                                                                 title="ver" class="btn btn-primary"
@@ -262,15 +263,15 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="card">
-                                        <div class="card-header">
-                                            <h3 class="card-title" style="bold">Quimestre 1</h3>
-                                        </div>
                                         <!-- /.card-header -->
                                         <div class="card-body table-responsive p-0" style="height: 500px;">
                                             <table class="table table-head-fixed text-nowrap">
                                                 <thead>
                                                     <tr>
-                                                        <th>Descripcion</th>
+                                                        <th colspan=2 style=" text-align: center;">QUIMESTRE 1</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Deberes</th>
                                                         <th>Nota</th>
                                                     </tr>
                                                 </thead>
@@ -296,14 +297,33 @@
                                                     ?>
 
                                                 </tbody>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Talleres</th>
+                                                        <th>Nota</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                </tbody>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Pruebas</th>
+                                                        <th>Nota</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                </tbody>
                                             </table>
-                                            <div class="card-header">
-                                                <h3 class="card-title" style="bold">Quimestre 2</h3>
-                                            </div>
+
                                             <table class="table table-head-fixed text-nowrap">
                                                 <thead>
                                                     <tr>
-                                                        <th>Descripcion</th>
+                                                        <th colspan=2 style=" text-align: center;">QUIMESTRE 2</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Deberes</th>
                                                         <th>Nota</th>
                                                     </tr>
                                                 </thead>
@@ -328,6 +348,24 @@
                                                             }
                                                         }
                                                     ?>
+
+                                                </tbody>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Talleres</th>
+                                                        <th>Nota</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                </tbody>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Pruebas</th>
+                                                        <th>Nota</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
 
                                                 </tbody>
                                             </table>
