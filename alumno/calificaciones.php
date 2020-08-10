@@ -14,6 +14,7 @@
         $calificacionesQ1 = "";
         $calificacionesQ2 = "";
         $periodo = "";
+
             if(isset($_POST["accion"]) && $_POST["accion"] == "Buscar"){
                 $calificaciones =$alumnoService->getAsignaturasCalificaciones($_POST['periodo'],$_SESSION["user"]['COD_PERSONA']);
             }elseif(isset($_POST["ver"])){
@@ -108,7 +109,7 @@
         <div class="content-wrapper">
             <!-- Main content -->
             <form action="./calificaciones.php" method="POST" id="formCalificaciones" class="formCalificaciones">
-            <input type="hidden" name="periodo" value = "<?php echo $periodo?>">
+                <input type="hidden" name="periodo" value="<?php echo $periodo?>">
                 <section class="content">
                     <div class="container-fluid">
                         <!-- /.col-md-6 -->
@@ -235,7 +236,8 @@
                                             <?php
                                                 if ($asignaturas->num_rows > 0) { 
                                                     while($materia = $asignaturas->fetch_assoc()) { ?>
-                                            <option value=<?php echo $materia['COD_ASIGNATURA']; ?>>
+                                            <option value=<?php echo $materia['COD_ASIGNATURA']; ?>
+                                                <?php if($codAsignatura == $materia['COD_ASIGNATURA']){echo 'selected';} ?>>
                                                 <?php echo $materia['NOMBRE']; ?>
                                             </option> <?php             
                                                     }
@@ -245,13 +247,14 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-2 col-4">
+                                <div class="col-lg-2 col-8">
                                     <br>
                                     <div class="form-group">
-                                            <input type="button" name="accion" class="btn btn-block btn-primary float-right"
-                                            style="padding-bottom: 4px; width:75px;" value="Buscar Asignaturas"
+                                        <input type="button" name="accion" class="btn btn-block btn-primary"
+                                            style="padding-bottom: 14px; width:90px;" value="Buscar"
                                             onclick="buscarAsignaturas();">
                                     </div>
+
 
                                 </div>
                             </div>
@@ -272,19 +275,22 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                
+
                                                     <?php
                                                         if($calificacionesQ1==""){
                                                             echo "<td colspan = '5'> No hay Datos</td>";
                                                         }else{
                                                             if($calificacionesQ1->num_rows > 0) {
+                                                                $indice = 1;
                                                                 while($cal1 = $calificacionesQ1->fetch_assoc()) {?>
-                                                                    <tr>
-                                                                     <td> <?php echo $cal1["DETALLE_TAREA"]  ?></td>
-                                                                     <td> <?php  echo $cal1["NOTA1"] ?></td>
-                                                                    </tr>
+                                                    <tr>
+                                                        <td> <?php echo $cal1["DETALLE_TAREA"]  ?></td>
+                                                        <?php $nota="NOTA";    ?>
+                                                        <td> <?php  echo $cal1[$nota .$indice] ?></td>
+                                                    </tr>
                                                     <?php
-                                                                }
+                                                            $indice = $indice+1;    
+                                                            }
                                                             }
                                                         }
                                                     ?>
@@ -308,13 +314,17 @@
                                                             echo "<td colspan = '5'> No hay Datos</td>";
                                                         }else{
                                                             if($calificacionesQ2->num_rows > 0) {
+                                                                $indice = 1;
                                                                 while($cal2 = $calificacionesQ2->fetch_assoc()) {?>
-                                                                    <tr>
-                                                                     <td> <?php echo $cal2["DETALLE_TAREA"]  ?></td>
-                                                                     <td> <?php  echo $cal2["NOTA1"] ?></td>
-                                                                    </tr>
+                                                    <tr>
+                                                        <td> <?php echo $cal2["DETALLE_TAREA"]  ?></td>
+                                                        <?php $nota="NOTA";    ?>
+                                                        <td> <?php  echo $cal2[$nota.$indice] ?></td>
+
+                                                    </tr>
                                                     <?php
-                                                                }
+                                                            $indice = $indice+1;      
+                                                            }
                                                             }
                                                         }
                                                     ?>
@@ -353,7 +363,7 @@
     </div>
     <!-- ./wrapper -->
     <script>
-        function buscarAsignaturas() {
+    function buscarAsignaturas() {
         document.getElementById("formCalificaciones").submit();
     }
     </script>
