@@ -1,12 +1,16 @@
 <?php
-include '../service/loginService.php';
+//include '../service/loginService.php';
+include '../service/docenteService.php';
+
+$docente = new DocenteService();
+$periodo = $docente->findPeriodo();
 $i = 1;
 session_start();
 if (!isset($_SESSION['user'])) {
     header('Location: ../login.php');
 } else {
 
-    $loginService = new LoginService();
+   // $loginService = new LoginService();
 
 
     if ($_SESSION["user"]['COD_ROL'] == 'ADM') {
@@ -19,7 +23,6 @@ if (!isset($_SESSION['user'])) {
         $nombreRol = 'REPRESENTANTE';
     }
 }
-
 
 ?>
 
@@ -143,9 +146,14 @@ if (!isset($_SESSION['user'])) {
                                 <div class="form-group">
                                     <label>Periodo</label>
                                     <select class="form-control">
-                                        <option>Periodo 1</option>
-                                        <option>Periodo 2</option>
-                                        <option>Periodo 3</option>
+                                    <?php
+                                    if ($periodo) {
+                                        while ($row = $periodo->fetch_assoc()) { ?>
+                                        <option><?php echo $row['COD_PERIODO_LECTIVO']; ?></option>
+                                    <?php }
+                                    } else { ?>
+                                        <option>NA</option>
+                                    <?php } ?>
                                     </select>
                                 </div>
                             </div>
@@ -154,8 +162,8 @@ if (!isset($_SESSION['user'])) {
                                 <div class="form-group">
                                     <label>Quimestre</label>
                                     <select class="form-control">
-                                        <option>Primer</option>
-                                        <option>Segundo</option>
+                                        <option value="1">Primer</option>
+                                        <option value="2">Segundo</option>
 
                                     </select>
                                 </div>
