@@ -19,7 +19,7 @@
             //echo $_POST["codNivelAsignatura"];
             
             $matriculados = $matriculaService->getMatricula($_POST["codigoPeriodo"],$_POST["codNivelAsignatura"]);
-            print_r($matriculados);
+            //print_r($matriculados);
         }
 
 
