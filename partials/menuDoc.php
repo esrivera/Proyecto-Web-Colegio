@@ -43,17 +43,17 @@
                         </li>
                         <li class="nav-item has-treeview">
                             <a href="" class="nav-link">
-                                <i class="nav-icon fas fa-table"></i>
+                                <i class="nav-icon fas fa-edit"></i>
                                 <p>
-                                    Gestión Docente
+                                    Calificaiones
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="./infraestructura/sede.html" class="nav-link">
+                                    <a href="../docente/agregarNotas.php" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Docente</p>
+                                        <p>Ingreso Calificaciones</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
