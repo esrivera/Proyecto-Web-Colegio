@@ -5,7 +5,7 @@ $password = "";
 if (isset($_POST['username']) && isset($_POST['password'])) {
   $loginService = new LoginService();
   $password = $encriptar($_POST['password']);
-  $row = $loginService->login($_POST['username'], $_POST['password']);
+  $row = $loginService->login($_POST['username'], $password);
   if (isset($row)) {
     session_start();
     $_SESSION["user"] = $row;
