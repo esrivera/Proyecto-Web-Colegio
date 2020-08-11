@@ -1,26 +1,26 @@
 <?php
-      include '../service/loginService.php';
-      
-      session_start();
-      if(!isset($_SESSION['user'])){
-          header('Location: ../login.php');
-      }else{
+include '../service/loginService.php';
 
-        $loginService = new LoginService();
+session_start();
+if (!isset($_SESSION['user'])) {
+    header('Location: ../login.php');
+} else {
+
+    $loginService = new LoginService();
 
 
-        if($_SESSION["user"]['COD_ROL']=='ADM'){
-            $nombreRol= 'ADMINISTRADOR';
-        }elseif($_SESSION["user"]['COD_ROL']=='EST'){
-            $nombreRol= 'ESTUDIANTE';
-        }elseif($_SESSION["user"]['COD_ROL']=='DOC'){
-            $nombreRol= 'DOCENTE';
-        }elseif ($_SESSION["user"]['COD_ROL']=='REP') {
-            $nombreRol= 'REPRESENTANTE';
-        }
-      }
+    if ($_SESSION["user"]['COD_ROL'] == 'ADM') {
+        $nombreRol = 'ADMINISTRADOR';
+    } elseif ($_SESSION["user"]['COD_ROL'] == 'EST') {
+        $nombreRol = 'ESTUDIANTE';
+    } elseif ($_SESSION["user"]['COD_ROL'] == 'DOC') {
+        $nombreRol = 'DOCENTE';
+    } elseif ($_SESSION["user"]['COD_ROL'] == 'REP') {
+        $nombreRol = 'REPRESENTANTE';
+    }
+}
 
-  
+
 ?>
 
 
@@ -35,7 +35,7 @@
     <title>COLEGIO VPR | Perfil</title>
 
     <!-- CALL HEAD STYLES -->
-    <?php include '../partials/head.php';?>
+    <?php include '../partials/head.php'; ?>
 
 </head>
 
@@ -61,12 +61,12 @@
 
                 <!-- Log Out-->
                 <li class="nav-item dropdown">
-                    <a href="../service/logout.php" class="dropdown-item dropdown-footer">                        
+                    <a href="../service/logout.php" class="dropdown-item dropdown-footer">
                         Cerrar Sesión
                         <span class="badge badge-warning navbar-badge"></span>
                     </a>
                 </li>
-                
+
             </ul>
         </nav>
         <!-- /.navbar -->
@@ -75,10 +75,9 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="#" class="brand-link">
-                <img src="../public/intranet/dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
-                    class="brand-image img-circle elevation-3" style="opacity: .8">
+                <img src="../public/intranet/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
 
-                <span class="brand-text font-weight-light"><?php echo $nombreRol?></span> 
+                <span class="brand-text font-weight-light"><?php echo $nombreRol ?></span>
             </a>
 
             <!-- Sidebar -->
@@ -86,28 +85,29 @@
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="../public/intranet/dist/img/user2-160x160.jpg" class="img-circle elevation-2"
-                            alt="User Image">
+                        <img src="../public/intranet/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block"><?php echo $_SESSION["user"]['APELLIDO']; echo " ";echo $_SESSION["user"]['NOMBRE'] ?></a>
+                        <a href="#" class="d-block"><?php echo $_SESSION["user"]['APELLIDO'];
+                                                    echo " ";
+                                                    echo $_SESSION["user"]['NOMBRE'] ?></a>
                     </div>
                 </div>
-            <!-- Call Menu Rols -->
-            <?php
-                if($_SESSION["user"]['COD_ROL']=='ADM'){
+                <!-- Call Menu Rols -->
+                <?php
+                if ($_SESSION["user"]['COD_ROL'] == 'ADM') {
                     include '../partials/menuAdm.php';
-                }elseif($_SESSION["user"]['COD_ROL']=='EST'){
+                } elseif ($_SESSION["user"]['COD_ROL'] == 'EST') {
                     include '../partials/menuEst.php';
-                }elseif($_SESSION["user"]['COD_ROL']=='DOC'){
+                } elseif ($_SESSION["user"]['COD_ROL'] == 'DOC') {
                     include '../partials/menuDoc.php';
-                }elseif($_SESSION["user"]['COD_ROL']=='REP'){
+                } elseif ($_SESSION["user"]['COD_ROL'] == 'REP') {
                     include '../partials/menuRep.php';
                 }
-                
-            ?>
 
-            <!-- End Call Menu Rols -->
+                ?>
+
+                <!-- End Call Menu Rols -->
             </div>
             <!-- /.sidebar -->
         </aside>
@@ -123,11 +123,56 @@
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><?php echo $nombreRol?></li>
+                                <li class="breadcrumb-item"><?php echo $nombreRol ?></li>
                                 <li class="breadcrumb-item active">INICIO</li>
                             </ol>
                         </div>
                     </div>
+                </div><!-- /.container-fluid -->
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <!-- Profile Image -->
+                            <div class="card card-primary card-outline">
+                                <div class="card-body box-profile">
+                                    <div class="text-center">
+                                        <img class="profile-user-img img-fluid img-circle" src="../public/intranet/dist/img/avatar5.png" alt="User profile picture">
+                                    </div>
+
+                                    <h3 class="profile-username text-center"><?php echo $_SESSION["user"]['APELLIDO']; echo " "; echo $_SESSION["user"]['NOMBRE'];?></h3>
+
+                                    <p class="text-muted text-center"><?php echo $nombreRol; ?></p>
+
+                                    <ul class="list-group list-group-unbordered mb-3">
+                                        <li class="list-group-item">
+                                            <b>Correo: </b> <a class="float-right"><?php echo $_SESSION["user"]['CORREO_PERSONAL'];?></a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Correo Institucional: </b> <a class="float-right"><?php echo $_SESSION["user"]['CORREO'];?></a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Dirección: </b> <a class="float-right"><?php echo $_SESSION["user"]['DIRECCION'];?></a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Teléfono: </b> <a class="float-right"><?php echo $_SESSION["user"]['TELEFONO'];?></a>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <b>Fecha de Nacimiento: </b> <a class="float-right"><?php echo $_SESSION["user"]['FECHA_NACIMIENTO'];?></a>
+                                        </li>
+                                    </ul>
+
+                                    <a href="editar.php" class="btn btn-primary btn-block"><b>Actualizar Información</b></a>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                    </div>
+                    <!-- /.row -->
                 </div><!-- /.container-fluid -->
             </section>
 
@@ -146,8 +191,8 @@
         </div>
         <!-- /.content-wrapper -->
 
-        <!-- CALL FOOTER -->   
-        <?php include '../partials/footer.php';?>
+        <!-- CALL FOOTER -->
+        <?php include '../partials/footer.php'; ?>
 
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
@@ -157,7 +202,7 @@
     </div>
     <!-- ./wrapper -->
 
-    
+
 
     <!-- Page specific script -->
 </body>
