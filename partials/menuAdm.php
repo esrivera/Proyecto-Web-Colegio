@@ -22,21 +22,27 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="alumno.html" class="nav-link">
+                                    <a href="alumno.php" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Alumnos</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="docente.html" class="nav-link ">
+                                    <a href="docente.php" class="nav-link ">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Docentes</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="Representante.html" class="nav-link ">
+                                    <a href="representante.php" class="nav-link ">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Representantes</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="directivo.php" class="nav-link ">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Directivo</p>
                                     </a>
                                 </li>
                             </ul>
