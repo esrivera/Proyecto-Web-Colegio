@@ -57,12 +57,6 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="./infraestructura/sede.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Sedes</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
                                     <a href="../administrador/edificio.php" class="nav-link ">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Edificios</p>
@@ -85,12 +79,6 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="periodo.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Gestión Periodos</p>
-                                    </a>
-                                </li>
                                 <li class="nav-item">
                                     <a href="../administrador/asignatura.php" class="nav-link ">
                                         <i class="far fa-circle nav-icon"></i>
