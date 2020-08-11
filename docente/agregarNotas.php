@@ -1,6 +1,6 @@
 <?php
 include '../service/loginService.php';
-
+$i = 1;
 session_start();
 if (!isset($_SESSION['user'])) {
     header('Location: ../login.php');
@@ -226,7 +226,8 @@ if (!isset($_SESSION['user'])) {
                                         <table class="table table-head-fixed text-nowrap">
                                             <thead>
                                                 <tr>
-                                                    <th>ID</th>
+                                                    <th>N°</th>
+                                                    <th>Apellido</th>
                                                     <th>Nombre</th>
                                                     <th>Calificacion</th>
                                                 </tr>

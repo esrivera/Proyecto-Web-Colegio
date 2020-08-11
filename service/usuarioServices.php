@@ -48,7 +48,7 @@ include 'mainService.php';
         
         //LISTAR
         function findAll($tipo){
-            $result = $this->conex->query("SELECT * FROM PERSONA P, TIPO_PERSONA_PERSONA TP WHERE TP.COD_PERSONA = P.COD_PERSONA AND TP.COD_TIPO_PERSONA = '$tipo'");
+            $result = $this->conex->query("SELECT * FROM PERSONA P, TIPO_PERSONA_PERSONA TP WHERE TP.COD_PERSONA = P.COD_PERSONA AND TP.COD_TIPO_PERSONA = '$tipo' ORDER BY P.APELLIDO");
             if ($result->num_rows > 0) {
                 return $result;      
             }else{

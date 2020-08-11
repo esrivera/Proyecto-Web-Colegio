@@ -13,7 +13,7 @@ if (isset($_GET["accion"]) && $_GET["accion"] == 'Buscar') {
     $user->deleteU($_GET['delete']);
     $user->deleteP($_GET['delete']);
     header('Location: listar_alumno.php');
-} else{
+} else {
     $result = $user->findAll('EST');
 }
 ?>
@@ -114,10 +114,13 @@ if (isset($_GET["accion"]) && $_GET["accion"] == 'Buscar') {
                                     <div class="card-header">
                                         <form method="get" action="listar_alumno.php">
                                             <div class="card-tools">
-                                                <div class="input-group input-group-sm" style="width: 150px;">
+                                                <div class="input-group input-group-sm" style="width: 250px;">
                                                     <input type="text" name="ci" id="ci" class="form-control float-right" placeholder="Ingresar Cedula">
                                                     <div class="input-group-append">
                                                         <button type="submit" name="accion" value="Buscar" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                                    </div>
+                                                    <div class="input-group-append">
+                                                        <a type="submit" href="listar_alumno.php" name="accion" value="Refrescar" class="btn btn-default"><i class="fas fa-list"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
