@@ -6,23 +6,35 @@
          header('Location: ../login.php');
     }else{
 
-        $accion="";
+        $accion="Asignar matricula";
         $matriculaService= new MatriculaService();
 
+        //$codigoPeriodo="P12020";
 
         $periodo=$matriculaService->getPeriodos();
         $nivelAsignatura= $matriculaService->getNivelEducativo();
-        //$alumnos= $matriculaService->getAlumnosNuevos();
+        $alumnos= $matriculaService->getAlumnosNuevos();
 
-        if(isset($_POST["codigoPeriodo"],$_POST["codNivelAsignatura"])){
-            //echo $_POST["codigoPeriodo"];
-            //echo $_POST["codNivelAsignatura"];
+       
+        if(isset($_POST["accion"]) && $_POST["accion"] == "Asignar matricula"){
+
+
+            if (isset($_POST["codigoAlumno"])){
+                echo 'entro al for';
+                foreach ($_POST["codigoAlumno"] as $codAlumno)
+                $matriculaService->insert($_POST["codigoPeriodo"],$codAlumno,$_POST["codNivelAsignatura"]);
+                echo $codAlumno;
+                
+            }
+            echo ($_POST["codigoPeriodo"]);
+            //echo ($_POST["codigoAlumno"]);
+            echo ($_POST["codNivelAsignatura"]);
             
-            $matriculados = $matriculaService->getMatricula($_POST["codigoPeriodo"],$_POST["codNivelAsignatura"]);
-            print_r($matriculados);
+            
+            //$aulas = $matriculaService->getAula($_POST["codigoEdificio"]);
+           
+
         }
-
-
 
     }
 
@@ -98,14 +110,14 @@
 
         <div class="content-wrapper">
             <!-- Main content -->
-            <form action="./matricula.php" method="POST" id="formMatricula1" class="formMatricula1">
+            <form action="./matriculaNuevos.php" method="POST" id="formMatricula" class="formMatricula">
                 <section class="content">
                     <div class="conatiner-fluid">
                         <div class="row">
                             <!-- left column -->
                             <div class="container-fluid">
                                 <div class="col mb-1">
-                                    <h1 style="text-align: center;">Matricula</h1>
+                                    <h1 style="text-align: center;">Matricula Alumnos Nuevos</h1>
                                 </div>
                             </div>
 
@@ -113,7 +125,7 @@
                                 <div class="form-group row mb-2">
                                     <div class="col-sm-3">
                                         <select class="form-control" id="periodo" name="codigoPeriodo"
-                                            form="formMatricula1" required>
+                                            form="formMatricula" required>
                                             <?php if ($periodo->num_rows > 0) { 
                                                         while($resultPeriodo = $periodo->fetch_assoc()) { ?>
                                             <option
@@ -131,7 +143,7 @@
 
                                     <div class="col-sm-5.5">
                                         <select class="form-control" id="codNivelAsignatura" name="codNivelAsignatura"
-                                            form="formMatricula1">
+                                            form="formMatricula">
                                             <?php   if ($nivelAsignatura->num_rows > 0) { 
                                                     while($nivel = $nivelAsignatura->fetch_assoc()) {
                                                         ?><option <?php  
@@ -152,12 +164,16 @@
                                         </select>
                                     </div>
 
-                                    <div class="col-sm-4">
+                                    <!-- <div class="col-sm-4">
                                         <input type="button" name="Buscar" class="btn btn-block btn-primary float-right"
                                             style="padding-bottom: 4px; width:140px;" value="Buscar"
                                             onclick="buscarMatricula();">
-                                    </div>
+                                    </div> -->
 
+                                    <div class="col-sm-4">
+                                        <input type="submit" class="btn btn-primary btn-block" name="accion"
+                                            value="<?php echo $accion;?>">
+                                    </div>
                                     
                                     
 
@@ -170,28 +186,25 @@
                                                 <th>CEDULA</th>
                                                 <th>APELLIDO</th>
                                                 <th>NOMBRE</th>
-                                                <th>PQ1</th>
-                                                <th>PQ2</th>
-                                                <th>P_FINAL</th>
+                                                <th>ACCIÓN</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
-                                        if($matriculados!=""){
-                                        if ($matriculados->num_rows > 0) {
+                                        if($alumnos!=""){
+                                        if ($alumnos->num_rows > 0) {
                                         // output data of each row
-                                        while($row = $matriculados->fetch_assoc()) {
+                                        while($row = $alumnos->fetch_assoc()) {
                                         ?>
                                             <tr>
                                                 <td><?php echo $row["COD_PERSONA"]?></td>
                                                 <td><?php echo $row["CEDULA"]?></td>
                                                 <td><?php echo $row["APELLIDO"]?></td>
                                                 <td><?php echo $row["NOMBRE"]?></td>
-                                                <td><?php echo $row["PROMEDIOQ1"]?></td>
-                                                <td><?php echo $row["PROMEDIOQ2"]?></td>
-                                                <td><?php echo $row["PROMEDIO_FINAL"]?></td>
                                                
-                                                
+                                                <td><input type="checkbox" class="form-check-input-center" name="codigoAlumno[]"
+                                                        value="<?php echo $row["COD_PERSONA"]?>"></<td>
                                                 <!-- <td><a href="./matricula.php?delete=<?php echo $row['COD_AULA'];?>"
                                                         class="btn btn-danger btn-sm"><span
                                                             class="glyphicon glyphicon-trash"></span> Eliminar</a> -->
@@ -236,10 +249,8 @@
     <!-- Page specific script -->
     <script>
     function buscarMatricula() {
-        document.getElementById("formMatricula1").submit();
+        document.getElementById("formMatricula").submit();
     }
-
-    </script>
 
 
 

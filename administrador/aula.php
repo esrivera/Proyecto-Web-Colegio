@@ -148,7 +148,7 @@
                                     <h1 style="text-align: center;">Gestión de Aulas</h1>
                                 </div>
                             </div>
-                            <div class="col-sm-5 mx-auto">
+                            <div class="col-sm-6 mx-auto">
 
                                 <div class="form-group row mb-2">
                                     <div class="col-sm-5">

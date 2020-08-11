@@ -110,9 +110,15 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
+                                    <a href="../administrador/matriculaNuevos.php" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Matrícula Alumnos Nuevos </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="../administrador/matricula.php" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Asignación Matrícula </p>
+                                        <p>Listado Matrícula</p>
                                     </a>
                                 </li>
                             </ul>
