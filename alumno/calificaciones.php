@@ -167,6 +167,9 @@
                                                         <th>Quimestre 1</th>
                                                         <th>Quimestre 2</th>
                                                         <th>Promedio</th>
+                                                        <th>Supletorio</th>
+                                                        <th>Remedial</th>
+                                                        <th>Gracia</th>
                                                         <th>Ver</th>
                                                     </tr>
                                                 </thead>
@@ -189,6 +192,9 @@
                                                                     ?>
                                                         <td><?php echo $row["NOTA15"]?></td>
                                                         <td> <?php echo ($row["NOTA15"] + $prom1 )/2?> </td>
+                                                        <td><?php echo $row["NOTA11"]?></td>
+                                                        <td><?php echo $row["NOTA12"]?></td>
+                                                        <td><?php echo $row["NOTA13"]?></td>
                                                         <td>
                                                             <button value=<?php echo $row["COD_ASIGNATURA"]?> name="ver"
                                                                 title="ver" class="btn btn-primary"
@@ -261,7 +267,7 @@
                             </div>
                             <!-- /.row -->
                             <div class="row">
-                                <div class="col-12">
+                                <div class="col-lg-5 col-8">
                                     <div class="card">
                                         <!-- /.card-header -->
                                         <div class="card-body table-responsive p-0" style="height: 500px;">
@@ -280,13 +286,13 @@
                                                     <?php
                                                         if($calificacionesQ1==""){
                                                             echo "<td colspan = '5'> No hay Datos</td>";
-                                                        }else{
+                                                        }else{  
                                                             if($calificacionesQ1->num_rows > 0) {
                                                                 $indice = 1;
                                                                 while($cal1 = $calificacionesQ1->fetch_assoc()) {?>
                                                     <tr>
                                                         <td> <?php echo $cal1["DETALLE_TAREA"]  ?></td>
-                                                        <?php $nota="NOTA";    ?>
+                                                        <?php $nota="NOTA";?>
                                                         <td> <?php  echo $cal1[$nota .$indice] ?></td>
                                                     </tr>
                                                     <?php
@@ -304,19 +310,85 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-
+                                                    <?php
+                                                        if($calificacionesQ1==""){
+                                                            echo "<td colspan = '5'> No hay Datos</td>";
+                                                        }else{
+                                                            if(isset($_POST["ver"])){
+                                                                $calificacionesQ1=$alumnoService->getNotas($_POST['periodo'],$_SESSION["user"]['COD_PERSONA'],$_POST["ver"],1);
+                                                            }elseif(isset($_POST["materia"])){
+                                                                $calificacionesQ1=$alumnoService->getNotas($_POST['periodo'],$_SESSION["user"]['COD_PERSONA'],$_POST["materia"],1); 
+                                                            }
+                                                            if($calificacionesQ1->num_rows > 0) {
+                                                                $indice = 4;
+                                                                while($cal1 = $calificacionesQ1->fetch_assoc()) {?>
+                                                    <tr>
+                                                        <td> Taller 1</td>
+                                                        <td> <?php  echo $cal1["NOTA4"] ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td> Taller 2</td>
+                                                        <td> <?php  echo $cal1["NOTA5"] ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td> Taller 3</td>
+                                                        <td> <?php  echo $cal1["NOTA6"] ?></td>
+                                                    </tr>
+                                                    <?php
+                                                              
+                                                            }
+                                                            }
+                                                        }
+                                                    ?>
                                                 </tbody>
                                                 <thead>
                                                     <tr>
-                                                        <th>Pruebas</th>
+                                                        <th>Lección</th>
                                                         <th>Nota</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-
+                                                <?php
+                                                        if($calificacionesQ1==""){
+                                                            echo "<td colspan = '5'> No hay Datos</td>";
+                                                        }else{
+                                                            if(isset($_POST["ver"])){
+                                                                $calificacionesQ1=$alumnoService->getNotas($_POST['periodo'],$_SESSION["user"]['COD_PERSONA'],$_POST["ver"],1);
+                                                            }elseif(isset($_POST["materia"])){
+                                                                $calificacionesQ1=$alumnoService->getNotas($_POST['periodo'],$_SESSION["user"]['COD_PERSONA'],$_POST["materia"],1); 
+                                                            }
+                                                            if($calificacionesQ1->num_rows > 0) {
+                                                                $indice = 4;
+                                                                while($cal1 = $calificacionesQ1->fetch_assoc()) {?>
+                                                    <tr>
+                                                        <td> Lección 1</td>
+                                                        <td> <?php  echo $cal1["NOTA7"] ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td> Lección 2</td>
+                                                        <td> <?php  echo $cal1["NOTA8"] ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td> Lección 3</td>
+                                                        <td> <?php  echo $cal1["NOTA9"] ?></td>
+                                                    </tr>
+                                                    <?php
+                                                              
+                                                            }
+                                                            }
+                                                        }
+                                                    ?>
                                                 </tbody>
                                             </table>
 
+                                        </div>
+
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+                                <div class="col-lg-5 col-8">
+                                    <div class="card">
+                                        <div class="card-body table-responsive p-0" style="height: 500px;">
                                             <table class="table table-head-fixed text-nowrap">
                                                 <thead>
                                                     <tr>
@@ -357,25 +429,85 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-
+                                                <?php
+                                                        if($calificacionesQ1==""){
+                                                            echo "<td colspan = '5'> No hay Datos</td>";
+                                                        }else{
+                                                            if(isset($_POST["ver"])){
+                                                                $calificacionesQ1=$alumnoService->getNotas($_POST['periodo'],$_SESSION["user"]['COD_PERSONA'],$_POST["ver"],2);
+                                                            }elseif(isset($_POST["materia"])){
+                                                                $calificacionesQ1=$alumnoService->getNotas($_POST['periodo'],$_SESSION["user"]['COD_PERSONA'],$_POST["materia"],2); 
+                                                            }
+                                                            if($calificacionesQ1->num_rows > 0) {
+                                                                $indice = 4;
+                                                                while($cal1 = $calificacionesQ1->fetch_assoc()) {?>
+                                                    <tr>
+                                                        <td> Lección 1</td>
+                                                        <td> <?php  echo $cal1["NOTA4"] ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td> Lección 2</td>
+                                                        <td> <?php  echo $cal1["NOTA5"] ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td> Lección 3</td>
+                                                        <td> <?php  echo $cal1["NOTA6"] ?></td>
+                                                    </tr>
+                                                    <?php
+                                                              
+                                                            }
+                                                            }
+                                                        }
+                                                    ?>
                                                 </tbody>
                                                 <thead>
                                                     <tr>
-                                                        <th>Pruebas</th>
+                                                        <th>Lección</th>
                                                         <th>Nota</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-
+                                                <?php
+                                                        if($calificacionesQ1==""){
+                                                            echo "<td colspan = '5'> No hay Datos</td>";
+                                                        }else{
+                                                            if(isset($_POST["ver"])){
+                                                                $calificacionesQ1=$alumnoService->getNotas($_POST['periodo'],$_SESSION["user"]['COD_PERSONA'],$_POST["ver"],2);
+                                                            }elseif(isset($_POST["materia"])){
+                                                                $calificacionesQ1=$alumnoService->getNotas($_POST['periodo'],$_SESSION["user"]['COD_PERSONA'],$_POST["materia"],2); 
+                                                            }
+                                                            if($calificacionesQ1->num_rows > 0) {
+                                                                $indice = 4;
+                                                                while($cal1 = $calificacionesQ1->fetch_assoc()) {?>
+                                                    <tr>
+                                                        <td> Lección 1</td>
+                                                        <td> <?php  echo $cal1["NOTA7"] ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td> Lección 2</td>
+                                                        <td> <?php  echo $cal1["NOTA8"] ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td> Lección 3</td>
+                                                        <td> <?php  echo $cal1["NOTA9"] ?></td>
+                                                    </tr>
+                                                    <?php
+                                                              
+                                                            }
+                                                            }
+                                                        }
+                                                    ?>
                                                 </tbody>
                                             </table>
-
                                         </div>
-
                                     </div>
-                                    <!-- /.card-body -->
                                 </div>
                                 <!-- /.card -->
+                            </div>
+
+
+                            <div class="row">
+
                             </div>
                         </div>
                         <?php

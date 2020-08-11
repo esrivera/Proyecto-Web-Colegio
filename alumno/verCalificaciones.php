@@ -147,7 +147,7 @@
                                                     <tr>
                                                         <th>Asignatura</th>
                                                         <th>Quimestre 1</th>
-                                                        <th>Quimestre 2</th>
+                                                        <th>Quimre 2</th>
                                                         <th>Promedio</th>
                                                         <th>Ver</th>
                                                     </tr>

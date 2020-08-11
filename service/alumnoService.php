@@ -5,7 +5,7 @@ include 'mainService.php';
             return $this->conex->query("SELECT * FROM PERIODO_LECTIVO WHERE ESTADO = 'ACT'");
         }
         function getAsignaturasCalificaciones($codPeriodo,$codAlumno) {
-            return $this->conex->query("SELECT NOMBRE,COD_QUIMESTRE,NOTA15,ASP.COD_ASIGNATURA FROM ALUMNO_ASIGNATURA_PERIODO ASP 
+            return $this->conex->query("SELECT NOMBRE,COD_QUIMESTRE,NOTA15,ASP.COD_ASIGNATURA,NOTA11,NOTA12,NOTA13,NOTA14 FROM ALUMNO_ASIGNATURA_PERIODO ASP 
             INNER JOIN ASIGNATURA ASI ON ASP.COD_ASIGNATURA = ASI.COD_ASIGNATURA
             WHERE ASP.COD_PERIODO_LECTIVO = '$codPeriodo' AND ASP.COD_ALUMNO=$codAlumno");
         }
@@ -23,6 +23,10 @@ include 'mainService.php';
             INNER JOIN ASIGNATURA ASI ON ASP.COD_ASIGNATURA = ASI.COD_ASIGNATURA
             WHERE ASP.COD_PERIODO_LECTIVO = '$codPeriodo' AND ASP.COD_ALUMNO=$codAlumno
             GROUP BY ASP.COD_ASIGNATURA");
+        }
+        function getNotas($codPeriodo,$codAlumno,$codAsignatura,$codQuimestre){
+            return $this->conex->query("SELECT * FROM ALUMNO_ASIGNATURA_PERIODO WHERE COD_PERIODO_LECTIVO = '$codPeriodo' 
+                                        AND COD_ASIGNATURA = '$codAsignatura' AND COD_ALUMNO = $codAlumno AND COD_QUIMESTRE = '$codQuimestre'");
         }
 
     }

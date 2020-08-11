@@ -7,8 +7,8 @@ include 'mainService.php';
         return $this->conex->query("SELECT * FROM NIVEL_EDUCATIVO ");
     }
 
-    function getPeriodo($codigoPeriodo) {
-        return $this->conex->query("SELECT * FROM PERIODO_LECTIVO WHERE  COD_PERIODO_LECTIVO LIKE '$codigoPeriodo'");
+    function getPeriodo() {
+        return $this->conex->query("SELECT * FROM PERIODO_LECTIVO");
     }
 
     function getAsignaturas($codNivelEducativo) {
@@ -37,6 +37,13 @@ include 'mainService.php';
         $stmt->close();
         
     }
+
+    function getAsignaturaCurso($periodo, $codNivelEducativo){
+        return $this->conex->query("SELECT * FROM ASIGNATURA_PERIODO WHERE COD_PERIODO_LECTIVO LIKE '$periodo' 
+                                            AND COD_NIVEL_EDUCATIVO LIKE '$codNivelEducativo' AND COD_QUIMESTRE = '1'");
+    }
+
+
  }
 
 

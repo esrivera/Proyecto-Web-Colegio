@@ -14,22 +14,23 @@
         $creditos = "";
         $tipo = "";
         $codNivelEducativo = "";
-
-        $codigoPeriodo="P12020";
+        $infoCursos = "";
         
-        $periodo=$asignacionService->getPeriodo($codigoPeriodo);
+        $periodo=$asignacionService->getPeriodo();
         $nivelAsignatura=$asignacionService->getNivelEducativo();
         $paraleo=$asignacionService->getParalelo();
         $docente=$asignacionService->getDocente();
         $aula=$asignacionService->getAula();
+        $infoCursos = "";
         
         if(isset($_POST["codNivelAsignatura"])){
           $asignaturas = $asignacionService->getAsignaturas($_POST["codNivelAsignatura"]);
+          $infoCursos = $asignacionService->getAsignaturaCurso($_POST["codPeriodoLectivo"],$_POST["codNivelAsignatura"]);
         }
         if(isset($_POST["accion"]) && $_POST["accion"] == "Agregar" && isset($_POST["codAsigantura"])){
           $asignacionService->insert($_POST["codNivelAsignatura"],$_POST["codAsigantura"],
                                 $_POST["codPeriodoLectivo"],$_POST["codParalelo"],$_POST["codPersona"],$_POST["codAula"]);
-        
+          $infoCursos = $asignacionService->getAsignaturaCurso($_POST["codPeriodoLectivo"],$_POST["codNivelAsignatura"]);
         }
 
       }
@@ -122,7 +123,7 @@
                             <div class="col-sm-4">
                                 <div class="card card-primary">
                                     <div class="card-header">
-                                        <h3 class="card-title">Asignacion Docentes</h3>
+                                        <h3 class="card-title">Asignacion Cursos</h3>
                                     </div>
                                     <div class="card-body">
                                         <div class="row">
@@ -228,7 +229,6 @@
                                                 <select class="form-control" id="codPersona" name="codPersona"   form="formAsignacion">
                                                     <?php
                                                             if($docente!=""){
-                                                                echo 'eeeeeeeeeeeoooooooooas';
                                                             if ($docente->num_rows > 0) {
                                                             // output data of each row
                                                             while($datPersona = $docente->fetch_assoc()) {
@@ -254,7 +254,7 @@
 
                                         <div class="row">
                                             <div class="col-sm-7">
-                                                <h5 class="card-title">Seleccione la asignatura</h5> <br>
+                                                <h5 class="card-title">Seleccione el aula</h5> <br>
                                             </div>
                                         </div>
 
@@ -264,7 +264,6 @@
                                                     form="formAsignacion">
                                                     <?php
                                                             if($aula!=""){
-                                                                echo 'eeeeeeeeeeeoooooooooas';
                                                             if ($aula->num_rows > 0) {
                                                             // output data of each row
                                                             while($datAulas = $aula->fetch_assoc()) {
@@ -287,6 +286,43 @@
                                                 </select>
                                             </div>
                                         </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-7">
+                                                <h5 class="card-title">Seleccione el Paralelo</h5> <br>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-8">  
+                                                <select class="form-control" id="codParalelo" name="codParalelo"
+                                                    form="formAsignacion">
+                                                    <?php
+                                                            if($paraleo!=""){
+                                                            if ($paraleo->num_rows > 0) {
+                                                            // output data of each row
+                                                            while($datParelelo = $paraleo->fetch_assoc()) {
+                                                                
+
+                                                                ?><option value=<?php echo $datParelelo["COD_PARALELO"]?>>
+                                                        <?php             echo $datParelelo["NOMBRE"];?>
+
+                                                    </option>
+                                                    <?php         }
+                                                            ?>
+
+                                                    <?php 
+                                                            }
+                                                        }else{
+                                                            echo 'ola';
+                                                        }
+
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        
+                                        
                                     </div>
 
                                     <div class="card-footer">
@@ -299,8 +335,48 @@
                             <div class="col-sm-7">
                                 <div class="card card-primary">
                                     <div class="card-header">
-                                        <h3 class="card-title">Asignacion Docentes</h3>
+                                        <h3 class="card-title">Información Cursos</h3>
                                     </div>
+                                    <div class="card-body table-responsive p-0" style="height: 500px;">
+                                    <table class="table table-head-fixed text-nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th>ASIGNATURA</th>
+                                                <th>DOCENTE</th>
+                                                <th>AULA</th>
+                                                <th>PARALELO</th>
+                                                <th>ACCIÓN</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                        if($infoCursos!=""){
+                                        if ($infoCursos->num_rows > 0) {
+                                        // output data of each row
+                                        while($info = $infoCursos->fetch_assoc()) {
+                                        ?>
+                                            <tr>
+                                                <td><?php echo $info["COD_ASIGNATURA"]?></td>
+                                                <td><?php echo $info["COD_DOCENTE"]?></td>
+                                                <td><?php echo $info["COD_AULA"]?></td>
+                                                <td><?php echo $info["COD_PARALELO"]?></td>
+                                                <td><input type="radio" name="" id=""></td>
+                                            </tr>
+                                            <?php 
+                                        }
+                                        ?>
+
+                                            <?php 
+                                        }else{
+                                        ?>
+                                            <tr>
+                                                <td colspan="5"> No hay datos</td>
+                                            </tr>
+                                            <?php }}
+                                        ?>
+                                        </tbody>
+                                    </table>
+                                </div>
                                 </div>
                             </div>
                         </div>
