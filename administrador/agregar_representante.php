@@ -30,7 +30,7 @@ $accion = "Agregar";
 $i = 1;
 
 if (isset($_POST['accion']) && ($_POST['accion'] == 'Agregar')) {
-    $username = $user->username($_POST['nombre'], $_POST['apellido']);  
+    $username = $user->username($_POST['nombre'], $_POST['apellido']);
     while ($user->findUN($username) != null) {
         $username = $user->username($_POST['nombre'], $_POST['apellido']);
         $username .= "$i";
@@ -52,6 +52,7 @@ if (isset($_POST['accion']) && ($_POST['accion'] == 'Agregar')) {
     $codRol = 'REP';
     $user->insertRU($codRol, $codUser, $estado);
     $user->insertTP($codRol, $codP, $estado, $ultFec);
+    $user->updateRep($codP,$_POST['ciEst']);
     header('Location: listar_representante.php');
 }
 ?>
@@ -171,15 +172,10 @@ if (isset($_POST['accion']) && ($_POST['accion'] == 'Agregar')) {
                                                     <input type="text" class="form-control" id="ci" name="ci" placeholder="Ingresar Cedula" required>
                                                 </div>
                                             </div>
-                                            <div class="div-sm-6">
+                                            <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label>Fecha de Nacimiento</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-                                                        </div>
-                                                        <input type="date" class="form-control" id="fecNac" name="fecNac" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" placeholder="dd/mm/yyyy" data-mask required>
-                                                    </div>
+                                                    <label for="exampleInputPassword1">Cedula Representado</label>
+                                                    <input type="text" class="form-control" id="ciEst" name="ciEst" placeholder="Ingresar Cedula Alumno" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -192,18 +188,26 @@ if (isset($_POST['accion']) && ($_POST['accion'] == 'Agregar')) {
                                             <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Ingresar Dirección Domiciliaria" required>
                                         </div>
                                         <div class="row">
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-4">
                                                 <div class="form-group">
                                                     <label for="exampleInputPassword1">Teléfono</label>
                                                     <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Ingresar Teléfono" required>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-4">
                                                 <label>Genero</label>
                                                 <select class="form-control" name="genero" id="genero">
                                                     <option value="MAS">MASCULINO</option>
                                                     <option value="FEM">FEMENINO</option>
                                                 </select>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Fecha de Nacimiento</label>
+                                                    <div class="input-group">
+                                                        <input type="date" class="form-control" id="fecNac" name="fecNac" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" placeholder="dd/mm/yyyy" data-mask required>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

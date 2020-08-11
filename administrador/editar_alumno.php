@@ -26,7 +26,7 @@ $intentos = 0;
 $res = "";
 $row = "";
 $temp = "";
-$accion = "Agregar";
+$accion = "Modificar";
 $i = 1;
 
 $codP = $_GET["update"];

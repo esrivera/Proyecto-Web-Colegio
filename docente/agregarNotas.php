@@ -267,9 +267,7 @@ if (!isset($_SESSION['user'])) {
                                                     <td>
                                                         <input class="form-control" type="number" max="10" min="0" style="width: 125px;">
                                                     </td>
-
                                                 </tr>
-
                                             </tbody>
                                         </table>
                                     </div>
