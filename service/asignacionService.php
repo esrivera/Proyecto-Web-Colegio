@@ -35,6 +35,13 @@ include 'mainService.php';
         $stmt->bind_param('ssssis', $codNivelEducativo,$codAsignatura,$codPeriodo,$codParalelo,$codDocente,$codAula);
         $stmt->execute();
         $stmt->close();
+
+        $stmt1 = $this->conex->prepare("INSERT INTO ASIGNATURA_PERIODO  
+                                        (COD_NIVEL_EDUCATIVO, COD_ASIGNATURA, COD_PERIODO_LECTIVO, COD_PARALELO, COD_DOCENTE, COD_QUIMESTRE, COD_AULA)  
+                                        VALUES (?,?,?,?,?,?,?)");
+        $stmt1->bind_param('ssssiss', $codNivelEducativo,$codAsignatura,$codPeriodo,$codParalelo,$codDocente,'2',$codAula);
+        $stmt1->execute();
+        $stmt1->close();
         
     }
 

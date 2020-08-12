@@ -8,20 +8,32 @@
       
         $accion="Crear Tarea";
         $tareas= "";
-        $tareaService = new Tareaservice();
+        $tareaService = new TareaService();
+        $aulas="";
 
-        $periodo=$tareaService->getPeriodo();
-        print_r($periodo);
+        $codigoPeriodo="P12020";
+        $docente= $tareaService->getDocente($_SESSION["user"]['APELLIDO']);
+        $nivelAsignatura=$tareaService->getNivelEducativo();
 
+        $periodo=$tareaService->getPeriodo($codigoPeriodo);
+        //print_r($periodo);
+        //print_r($_SESSION["user"]['COD_PERSONA']);
+        //echo date('Y');
 
-     
-        
-
-        if(isset($_POST["codEdificio"])){
+        if(isset($_POST["codNivelAsignatura"])){
             
+            $asignaturas= $tareaService->getAsignaturas($_POST["codNivelAsignatura"],$_SESSION["user"]['COD_PERSONA'],$_POST["codPeriodoLectivo"]);
+            $aulas=$tareaService->getAula($_POST["codNivelAsignatura"],$_SESSION["user"]['COD_PERSONA'],$_POST["codPeriodoLectivo"]);
+            $paralelos= $tareaService->getParalelo($_POST["codNivelAsignatura"],$_SESSION["user"]['COD_PERSONA'],$_POST["codPeriodoLectivo"]);
             //$tareas = $tareaservice->getAula($_POST["codEdificio"]);
-            //print_r($tareas);
+            print_r($paralelos);
         }
+
+        if(isset($_POST["accion"]) && $_POST["accion"] == "Crear Tarea"){
+            $tareaService->insert($_POST["codNivelAsignatura"],$_POST["codAsignatura"],
+                                  $_POST["codPeriodoLectivo"],$_POST["codParalelo"],$_SESSION["user"]['COD_PERSONA'],$_POST["codigoQuimestre"],$_POST["detalleTarea"]);
+            //$infoCursos = $tareaService->getAsignaturaCurso($_POST["codPeriodoLectivo"],$_POST["codNivelAsignatura"]);
+          }
           
     }
     
@@ -99,12 +111,12 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Main content -->
-            <form action="./asignacion.php" method="POST" id="formAsignacion" class="formAsignacion">
+            <form action="./crearTarea.php" method="POST" id="formTarea" class="formTarea">
                 <section class="content">
                     <div class="container-fluid">
                         <div class="container-fluid">
                             <div class="col mb-1">
-                                <h1 style="text-align: center;">Crear Tarea</h1>
+                                <h1 style="text-align: center;">Envio de Tarea</h1>
                             </div>
                         </div>
 
@@ -118,7 +130,7 @@
                                         <div class="form-group">
                                             <label for="codigoAula">Sleccione el periodo</label>
                                             <select class="form-control" id="codPeriodoLectivo" name="codPeriodoLectivo"
-                                                form="formAsignacion">
+                                                form="formTarea">
                                                 <?php   if ($periodo->num_rows > 0) { 
                                                     while($nivel = $periodo->fetch_assoc()) {
                                                         ?><option <?php  
@@ -133,11 +145,11 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="codigoAula">Sleccione el nivel educativo</label>
+                                            <label for="codNivelAsignatura">Sleccione el nivel educativo</label>
                                             <div class="row">
                                                 <div class="col-sm-8">
                                                     <select class="form-control" id="codNivelAsignatura"
-                                                        name="codNivelAsignatura" form="formAsignacion">
+                                                        name="codNivelAsignatura" form="formTarea">
                                                         <?php   if ($nivelAsignatura->num_rows > 0) { 
                                                     while($nivel = $nivelAsignatura->fetch_assoc()) {
                                                         ?><option <?php  
@@ -170,34 +182,106 @@
                                         </div>
 
                                         <div class="for-group">
-                                        <label for="codigoAula">Selecciona la asignatura</label>
-                                        <select class="form-control" id="codAsigantura" name="codAsigantura"
-                                                    form="formAsignacion">
-                                                    <?php
+                                            <label for="codAsignatura">Selecciona la asignatura</label>
+                                            <select class="form-control" id="codAsignatura" name="codAsignatura"
+                                                form="formTarea">
+                                                <?php
                                                         if($asignaturas!=""){
                                                         if ($asignaturas->num_rows > 0) {
                                                             // output data of each row
                                                         while($nivel = $asignaturas->fetch_assoc()) {
                                                                 ?><option value=<?php echo $nivel["COD_ASIGNATURA"]?>>
-                                                        <?php             echo $nivel["NOMBRE"]?>
+                                                    <?php             echo $nivel["NOMBRE"]?>
 
-                                                    </option>
-                                                    <?php         }
+                                                </option>
+                                                <?php         }
                                                             ?>
 
-                                                    <?php 
+                                                <?php 
                                                             }
                                                         }else{
-                                                            echo "<option value = 'null'> RELACICE LA BUSQUEDA </option> ";
+                                                            echo "<option value = 'null'> REALICE LA BUSQUEDA </option> ";
                                                         }
 
                                                     ?>
-                                                </select>
+                                            </select>
+                                        </div>
+                                        <div class="for-group">
+                                            <label for="codigoAula">Selecciona el Aula</label>
+                                            <select class="form-control" id="codigoAula" name="codigoAula"
+                                                form="formTarea">
+                                                <?php
+                                                        if($aulas!=""){
+                                                        if ($aulas->num_rows > 0) {
+                                                            // output data of each row
+                                                        while($aulaDoc = $aulas->fetch_assoc()) {
+                                                                ?><option value=<?php echo $aulaDoc["COD_AULA"]?>>
+                                                    <?php             echo $aulaDoc["NOMBRE"]?>
+
+                                                </option>
+                                                <?php         }
+                                                            ?>
+
+                                                <?php 
+                                                            }
+                                                        }else{
+                                                            echo "<option value = 'null'> REALICE LA BUSQUEDA </option> ";
+                                                        }
+
+                                                    ?>
+                                            </select>
+                                        </div>
+                                        <div class="for-group">
+                                            <label for="codigoParalelo">Selecciona el Paralelo</label>
+                                            <select class="form-control" id="codigoParalelo" name="codParalelo"
+                                                form="formTarea">
+                                                <?php
+                                                        if($paralelos!=""){
+                                                        if ($paralelos->num_rows > 0) {
+                                                            // output data of each row
+                                                        while($paraleloDoc = $paralelos->fetch_assoc()) {
+                                                                ?><option
+                                                    value=<?php echo $paraleloDoc["COD_PARALELO"]?>>
+                                                    <?php             echo $paraleloDoc["NOMBRE"]?>
+
+                                                </option>
+                                                <?php         }
+                                                            ?>
+
+                                                <?php 
+                                                            }
+                                                        }else{
+                                                            echo "<option value = 'null'> REALICE LA BUSQUEDA </option> ";
+                                                        }
+
+                                                    ?>
+                                            </select>
                                         </div>
 
+                                        <div class="for-group">
+                                            <label for="codigoQuimestre">Selecciona el Quimestre</label>
+                                            <select class="form-control" id="codigoQuimestre" name="codigoQuimestre"
+                                                form="formTarea">
+                                                <option value='1'
+                                                    <?php if($tipo!="" && $tipo=='1'){echo 'selected'; }?>>
+                                                    PRIMERO</option>
 
-                                
+                                                <option value='2'
+                                                    <?php if($tipo!="" && $tipo=='2'){echo 'selected'; }?>>
+                                                    SEGUNDO</option>
+
+
+                                            </select>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="detalleTarea">Descripción Tarea</label>
+                                            <textarea class="form-control" id="detalleTarea"name="detalleTarea"
+                                                rows="3"></textarea>
+                                        </div>
                                         
+
+
                                     </div>
 
                                     <div class="card-footer">
@@ -207,7 +291,7 @@
                                 </div>
                             </div>
 
-                          
+
                         </div>
                     </div>
                     <section>
@@ -228,7 +312,7 @@
     <!-- Page specific script -->
     <script>
     function buscarAsignaturas() {
-        document.getElementById("formAsignacion").submit();
+        document.getElementById("formTarea").submit();
     }
     </script>
 </body>
