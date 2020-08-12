@@ -82,7 +82,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         <!-- /.social-auth-links -->
 
         <p class="mb-1">
-          <a href="forgot-password.html">Olvidaste tu contraseña?</a>
+          <a href="forgot-password.php">Olvidaste tu contraseña?</a>
         </p>
       </div>
       <!-- /.login-card-body -->
