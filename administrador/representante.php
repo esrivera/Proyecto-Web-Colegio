@@ -99,16 +99,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="divcol-lg-3">
-                                <div class="card card-primary card-outline">
-                                    <div class="card-header">
-                                        <h5 class="card-title m-0">Agregar Representando</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <a href="editar_representante.html" class="btn btn-primary">Ingresar&nbsp&nbsp&nbsp<i class="fas fa-arrow-circle-right"></i></a>
-                                    </div>
-                                </div><!-- /.card -->
-                            </div>
                             <!-- /.col-md-6 -->
                             <div class="col-lg-3">
                                 <div class="card card-primary card-outline">

@@ -1,16 +1,16 @@
 <?php
 //include '../service/loginService.php';
 include '../service/docenteService.php';
-
+$codAsig = $_GET["insert"];
 $docente = new DocenteService();
 $periodo = $docente->findPeriodo();
-$i = 1;
+$$i = 1;
 session_start();
 if (!isset($_SESSION['user'])) {
     header('Location: ../login.php');
 } else {
 
-   // $loginService = new LoginService();
+    // $loginService = new LoginService();
 
 
     if ($_SESSION["user"]['COD_ROL'] == 'ADM') {
@@ -23,7 +23,7 @@ if (!isset($_SESSION['user'])) {
         $nombreRol = 'REPRESENTANTE';
     }
 }
-
+$tarea = $docente->findTarea($codAsig);
 ?>
 
 
@@ -124,12 +124,6 @@ if (!isset($_SESSION['user'])) {
                         <div class="col-sm-6">
                             <h1>Ingreso de calificaciones</h1>
                         </div>
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item">Lengua y Literatura</li>
-                                <li class="breadcrumb-item active">Ingreso Calificaciones</li>
-                            </ol>
-                        </div>
                     </div>
                 </div><!-- /.container-fluid -->
             </section>
@@ -144,27 +138,10 @@ if (!isset($_SESSION['user'])) {
                             <div class="col-lg-2 col-4">
                                 <!-- select -->
                                 <div class="form-group">
-                                    <label>Periodo</label>
-                                    <select class="form-control">
-                                    <?php
-                                    if ($periodo) {
-                                        while ($row = $periodo->fetch_assoc()) { ?>
-                                        <option><?php echo $row['COD_PERIODO_LECTIVO']; ?></option>
-                                    <?php }
-                                    } else { ?>
-                                        <option>NA</option>
-                                    <?php } ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-2 col-4">
-                                <!-- select -->
-                                <div class="form-group">
                                     <label>Quimestre</label>
                                     <select class="form-control">
                                         <option value="1">Primer</option>
                                         <option value="2">Segundo</option>
-
                                     </select>
                                 </div>
                             </div>
@@ -188,13 +165,14 @@ if (!isset($_SESSION['user'])) {
                                 <div class="form-group">
                                     <label>Tipo</label>
                                     <select class="form-control">
-                                        <option>Tarea</option>
-                                        <option>Taller</option>
-                                        <option>Prueba</option>
-                                        <option>Examen</option>
-                                        <option>Supletorio</option>
-                                        <option>Remedial</option>
-                                        <option>Gracia</option>
+                                        <?php
+                                        if ($tarea) {
+                                            while ($row = $tarea->fetch_assoc()) { ?>
+                                                <option><?php echo $row['DETALLE_TAREA']; ?></option>
+                                            <?php }
+                                        } else { ?>
+                                            <option>NA</option>
+                                        <?php } ?>
                                     </select>
 
                                 </div>
@@ -243,7 +221,8 @@ if (!isset($_SESSION['user'])) {
                                             <tbody>
                                                 <tr>
                                                     <td>ID001</td>
-                                                    <td>John Doe</td>
+                                                    <td>Doe</td>
+                                                    <td>John</td>
                                                     <td>
                                                         <input class="form-control" type="number" max="10" min="0" style="width: 125px;">
                                                     </td>
@@ -251,20 +230,23 @@ if (!isset($_SESSION['user'])) {
                                                 </tr>
                                                 <tr>
                                                     <td>ID002</td>
-                                                    <td>Alexander Pierce</td>
+                                                    <td>Pierce</td>
+                                                    <td>Alexander</td>
                                                     <td>
                                                         <input class="form-control" type="number" max="10" min="0" style="width: 125px;">
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>ID003</td>
-                                                    <td>Bob Doe</td>
+                                                    <td>Dewn</td>
+                                                    <td>Bart</td>
                                                     <td>
                                                         <input class="form-control" type="number" max="10" min="0" style="width: 125px;">
                                                     </td>
                                                 <tr>
                                                     <td>ID004</td>
-                                                    <td>Bob Doe</td>
+                                                    <td>Smith</td>
+                                                    <td>Bob</td>
                                                     <td>
                                                         <input class="form-control" type="number" max="10" min="0" style="width: 125px;">
                                                     </td>

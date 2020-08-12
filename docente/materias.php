@@ -5,10 +5,11 @@ include '../service/docenteService.php';
 $docente = new DocenteService();
 $i = 1;
 $nivel = $docente->findNivel();
-$nivel1 = $docente->findNivel();
+$codnivel = "";
 $periodo = $docente->findPeriodo();
 $codDocente = "";
 $asignatura = "";
+$nivel1 = "";
 session_start();
 if (!isset($_SESSION['user'])) {
     header('Location: ../login.php');
@@ -28,11 +29,10 @@ if (!isset($_SESSION['user'])) {
     }
 }
 $codDocente = $_SESSION["user"]['COD_PERSONA'];
-if(isset($_GET['accion'])  && $_GET["accion"] == 'Buscar'){    
-    $asignatura = $docente->findAsignatura($codDocente,$_GET['periodo'],$_GET['nivel']);
+if (isset($_GET['accion'])  && $_GET["accion"] == 'Buscar') {
+    $codnivel = $docente->findNiveldoCod($_GET['nivel']);
+    $asignatura = $docente->findAsignatura($codnivel['COD_NIVEL_EDUCATIVO'],$_GET['periodo']);
 }
-
-
 ?>
 
 
@@ -141,76 +141,78 @@ if(isset($_GET['accion'])  && $_GET["accion"] == 'Buscar'){
             <section class="content">
                 <div class="container-fluid">
                     <div class="container">
-                        <div class="row">
-                            <div class="col-lg-2 col-4">
-                                <!-- select -->
-                                <div class="form-group" name="periodo">
-                                    <label>Periodo</label>
-                                    <select class="form-control">
-                                        <?php
-                                        if ($periodo) {
-                                            while ($row = $periodo->fetch_assoc()) { ?>
-                                                <option><?php echo $row['COD_PERIODO_LECTIVO']; ?></option>
-                                            <?php }
-                                        } else { ?>
-                                            <option>NA</option>
-                                        <?php } ?>
-                                    </select>
+                        <form method="get" action="materias.php">
+                            <div class="row">
+                                <div class="col-lg-2 col-4">
+                                    <!-- select -->
+                                    <div class="form-group">
+                                        <label>Periodo</label>
+                                        <select class="form-control" name="periodo">
+                                            <?php
+                                            if ($periodo) {
+                                                while ($row = $periodo->fetch_assoc()) { ?>
+                                                    <option><?php echo $row['COD_PERIODO_LECTIVO']; ?></option>
+                                                <?php }
+                                            } else { ?>
+                                                <option>NA</option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-4">
+                                    <!-- select -->
+                                    <div class="form-group">
+                                        <label>Nivel Educativo</label>
+                                        <select class="form-control" name="nivel">
+                                            <?php
+                                            if ($nivel) {
+                                                while ($row = $nivel->fetch_assoc()) { ?>
+                                                    <option><?php echo $row['NOMBRE']; ?></option>
+                                                <?php }
+                                            } else { ?>
+                                                <option>NA</option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-9">
+                                    <br>
+                                    <div class="form-group"><button type="submit" name="accion" value="Buscar" class="btn btn-block btn-primary" style="padding-bottom: 8px;">
+                                            Listar Asignaturas</button></div>
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-4">
-                                <!-- select -->
-                                <div class="form-group">
-                                    <label>Nivel Educativo</label>
-                                    <select class="form-control" name="nivel">
-                                        <?php
-                                        if ($nivel) {
-                                            while ($row = $nivel->fetch_assoc()) { ?>
-                                                <option><?php echo $row['NOMBRE']; ?></option>
-                                            <?php }
-                                        } else { ?>
-                                            <option>NA</option>
-                                        <?php } ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-2 col-9">
-                                <br>
-                                <div class="form-group"><button type="button" class="btn btn-block btn-primary" style="padding-bottom: 10px;">
-                                        Listar Asignaturas</button></div>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
                 <div class="container-fluid">
                     <h5 class="mb-2">Asignaturas</h5>
                     <div class="row">
-                    <?php
-                    if ($nivel1) {
-                        while ($row = $nivel1->fetch_assoc()) { ?>
-                        <div class="col-md-3 col-sm-6 col-12">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text"><?php echo $row['NOMBRE']; ?></span>
-                                    <a href="agregarNotas.php" type="submit"><span class="info-box-number">Agregar Notas</span></a>
+                        <?php
+                        if ($asignatura) {
+                            while ($row = $asignatura->fetch_assoc()) { ?>
+                                <div class="col-md-3 col-sm-6 col-12">
+                                    <div class="info-box">
+                                        <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
+                                        <div class="info-box-content">
+                                            <span class="info-box-text"><?php echo $row['NOMBRE']; ?></span>
+                                            <a href="agregarNotas.php?insert=<?php echo $row['COD_ASIGNATURA']; ?>" type="submit"><span class="info-box-number">Agregar Notas</span></a>
+                                        </div>
+                                        <!-- /.info-box-content -->
+                                    </div>
+                                    <!-- /.info-box -->
                                 </div>
-                                <!-- /.info-box-content -->
-                            </div>
-                            <!-- /.info-box -->
-                        </div>
-                        <?php }
+                            <?php }
                         } else { ?>
-                           <div class="col-md-3 col-sm-6 col-12">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
-                                <div class="info-box-content">
-                                    <span class="info-box-text">No se encontraron Datos</span>
+                            <div class="col-md-3 col-sm-6 col-12">
+                                <div class="info-box">
+                                    <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">No se encontraron Datos</span>
+                                    </div>
+                                    <!-- /.info-box-content -->
                                 </div>
-                                <!-- /.info-box-content -->
+                                <!-- /.info-box -->
                             </div>
-                            <!-- /.info-box -->
-                        </div>
                         <?php } ?>
                         <!-- /.col -->
                     </div>

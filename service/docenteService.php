@@ -45,8 +45,8 @@ class DocenteService extends MainService
         }
     }
 
-    function findAsignatura($codDocente,$periodo,$nivel){
-        $result = $this->conex->query("SELECT * FROM ASIGNATURA A, ASIGNATURA_PERIODO AP WHERE AP.COD_NIVEL_EDUCATIVO='".$nivel."' AND A.COD_NIVEL_EDUCATIVO='".$nivel."' AND AP.COD_DOCENTE=".$codDocente." AND AP.COD_PERIODO_LECTIVO='".$periodo."'");
+    function findAsignatura($nivel,$periodo){
+        $result = $this->conex->query("SELECT * FROM ASIGNATURA WHERE COD_NIVEL_EDUCATIVO = '".$nivel."'");
         if ($result->num_rows != null) {
             return $result;
         } else {
@@ -54,10 +54,19 @@ class DocenteService extends MainService
         }
     }
 
-    function findNiveldoCod($codNivel){
-        $result = $this->conex->query("SELECT * FROM NIVEL_EDUCATIVO WHERE NOMBRE = '".$codNivel."'");
+    function findNiveldoCod($nombre){
+        $result = $this->conex->query("SELECT DISTINCT * FROM NIVEL_EDUCATIVO WHERE NOMBRE = '".$nombre."'");
         if ($result->num_rows != null) {
             return $result->fetch_assoc();
+        } else {
+            return null;
+        }
+    }
+
+    function findTarea($asignatura){
+        $result = $this->conex->query("SELECT * FROM TAREA_ASIGNATURA WHERE COD_ASIGNATURA = '".$asignatura."'");
+        if ($result->num_rows != null) {
+            return $result;
         } else {
             return null;
         }
