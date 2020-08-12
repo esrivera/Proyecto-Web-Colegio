@@ -63,8 +63,18 @@ class DocenteService extends MainService
         }
     }
 
-    function findTarea($asignatura){
-        $result = $this->conex->query("SELECT * FROM TAREA_ASIGNATURA WHERE COD_ASIGNATURA = '".$asignatura."'");
+    function findTarea($codDocente,$codAsignatura){
+       // $result = $this->conex->query("SELECT * FROM TAREA_ASIGNATURA WHERE COD_ASIGNATURA = '".$asignatura."'");
+        $result = $this->conex->query("SELECT * FROM TAREA_ASIGNATURA WHERE COD_DOCENTE = ".$codDocente." AND COD_ASIGNATURA='".$codAsignatura."'");
+        if ($result->num_rows != null) {
+            return $result;
+        } else {
+            return null;
+        }
+    }
+
+    function findCurso($codDocente,$codAsignatura){
+        $result = $this->conex->query("SELECT * FROM ALUMNO_ASIGNATURA_PERIODO WHERE COD_DOCENTE = '".$codDocente."' AND COD_ASIGNATURA='".$codAsignatura."'");
         if ($result->num_rows != null) {
             return $result;
         } else {

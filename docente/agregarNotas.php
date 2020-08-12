@@ -5,6 +5,8 @@ $codAsig = $_GET["insert"];
 $docente = new DocenteService();
 $periodo = $docente->findPeriodo();
 $$i = 1;
+$tarea = "";
+$curso = "";
 session_start();
 if (!isset($_SESSION['user'])) {
     header('Location: ../login.php');
@@ -23,7 +25,8 @@ if (!isset($_SESSION['user'])) {
         $nombreRol = 'REPRESENTANTE';
     }
 }
-$tarea = $docente->findTarea($codAsig);
+$tarea = $docente->findTarea($_SESSION["user"]['COD_PERSONA'], $codAsig);
+$curso = $docente->findCurso($_SESSION["user"]['COD_PERSONA'], $codAsig);
 ?>
 
 
@@ -150,10 +153,14 @@ $tarea = $docente->findTarea($codAsig);
                                 <div class="form-group">
                                     <label>Curso</label>
                                     <select class="form-control">
-                                        <option>Tercero A</option>
-                                        <option>Tercero B</option>
-                                        <option>Tercero C</option>
-                                        <option>Tercero D</option>
+                                        <?php
+                                        if ($curso) {
+                                            while ($row = $curso->fetch_assoc()) { ?>
+                                                <option><?php echo $row['COD_PARALELO']; ?></option>
+                                            <?php }
+                                        } else { ?>
+                                            <option>NA</option>
+                                        <?php } ?>
                                     </select>
 
                                 </div>
@@ -196,16 +203,6 @@ $tarea = $docente->findTarea($codAsig);
                                 <div class="card">
                                     <div class="card-header">
                                         <h3 class="card-title">Ingreso de calificaciones</h3>
-
-                                        <div class="card-tools">
-                                            <div class="input-group input-group-sm" style="width: 150px;">
-                                                <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                                                <div class="input-group-append">
-                                                    <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                     <!-- /.card-header -->
                                     <div class="card-body table-responsive p-0" style="height: 300px;">
@@ -247,13 +244,6 @@ $tarea = $docente->findTarea($codAsig);
                                                     <td>ID004</td>
                                                     <td>Smith</td>
                                                     <td>Bob</td>
-                                                    <td>
-                                                        <input class="form-control" type="number" max="10" min="0" style="width: 125px;">
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>ID005</td>
-                                                    <td>Bob Doe</td>
                                                     <td>
                                                         <input class="form-control" type="number" max="10" min="0" style="width: 125px;">
                                                     </td>
