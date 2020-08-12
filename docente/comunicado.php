@@ -1,14 +1,14 @@
 <?php
-    include '../service/tareaService.php';
+    include '../service/comunicadoService.php';
 
     session_start();
     if(!isset($_SESSION['user'])){
         header('Location: ../login.php');
     }else{
       
-        $accion="Crear Tarea";
+        $accion="Crear comunicado";
         $tareas= "";
-        $tareaService = new TareaService();
+        $tareaService = new ComunicadoService();
         $aulas="";
 
         $codigoPeriodo="P12020";
@@ -29,10 +29,11 @@
             //print_r($paralelos);
         }
 
-        if(isset($_POST["accion"]) && $_POST["accion"] == "Crear Tarea"){
+        if(isset($_POST["accion"]) && $_POST["accion"] == "Crear comunicado"){
             $tareaService->insert($_POST["codNivelAsignatura"],$_POST["codAsignatura"],
-                                  $_POST["codPeriodoLectivo"],$_POST["codParalelo"],$_SESSION["user"]['COD_PERSONA'],$_POST["codigoQuimestre"],$_POST["detalleTarea"]);
+                                  $_POST["codPeriodoLectivo"],$_POST["codParalelo"],$_SESSION["user"]['COD_PERSONA'],$_POST["detalleTarea"]);
             //$infoCursos = $tareaService->getAsignaturaCurso($_POST["codPeriodoLectivo"],$_POST["codNivelAsignatura"]);
+           
           }
           
     }
@@ -45,7 +46,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Crear Tarea</title>
+    <title>Crear Comunicado</title>
     <!-- CALL HEAD STYLES -->
     <?php include '../partials/head.php';?>
 
@@ -111,12 +112,12 @@
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Main content -->
-            <form action="./crearTarea.php" method="POST" id="formTarea" class="formTarea">
+            <form action="./comunicado.php" method="POST" id="formComunicado" class="formComunicado">
                 <section class="content">
                     <div class="container-fluid">
                         <div class="container-fluid">
                             <div class="col mb-1">
-                                <h1 style="text-align: center;">Envio de Tarea</h1>
+                                <h1 style="text-align: center;">Envio de Comunicado</h1>
                             </div>
                         </div>
 
@@ -130,7 +131,7 @@
                                         <div class="form-group">
                                             <label for="codigoAula">Sleccione el periodo</label>
                                             <select class="form-control" id="codPeriodoLectivo" name="codPeriodoLectivo"
-                                                form="formTarea">
+                                                form="formComunicado">
                                                 <?php   if ($periodo->num_rows > 0) { 
                                                     while($nivel = $periodo->fetch_assoc()) {
                                                         ?><option <?php  
@@ -149,7 +150,7 @@
                                             <div class="row">
                                                 <div class="col-sm-8">
                                                     <select class="form-control" id="codNivelAsignatura"
-                                                        name="codNivelAsignatura" form="formTarea">
+                                                        name="codNivelAsignatura" form="formComunicado">
                                                         <?php   if ($nivelAsignatura->num_rows > 0) { 
                                                     while($nivel = $nivelAsignatura->fetch_assoc()) {
                                                         ?><option <?php  
@@ -184,7 +185,7 @@
                                         <div class="for-group">
                                             <label for="codAsignatura">Selecciona la asignatura</label>
                                             <select class="form-control" id="codAsignatura" name="codAsignatura"
-                                                form="formTarea">
+                                                form="formComunicado">
                                                 <?php
                                                         if($asignaturas!=""){
                                                         if ($asignaturas->num_rows > 0) {
@@ -209,7 +210,7 @@
                                         <div class="for-group">
                                             <label for="codigoAula">Selecciona el Aula</label>
                                             <select class="form-control" id="codigoAula" name="codigoAula"
-                                                form="formTarea">
+                                                form="formComunicado">
                                                 <?php
                                                         if($aulas!=""){
                                                         if ($aulas->num_rows > 0) {
@@ -234,7 +235,7 @@
                                         <div class="for-group">
                                             <label for="codigoParalelo">Selecciona el Paralelo</label>
                                             <select class="form-control" id="codigoParalelo" name="codParalelo"
-                                                form="formTarea">
+                                                form="formComunicado">
                                                 <?php
                                                         if($paralelos!=""){
                                                         if ($paralelos->num_rows > 0) {
@@ -258,24 +259,11 @@
                                             </select>
                                         </div>
 
-                                        <div class="for-group">
-                                            <label for="codigoQuimestre">Selecciona el Quimestre</label>
-                                            <select class="form-control" id="codigoQuimestre" name="codigoQuimestre"
-                                                form="formTarea">
-                                                <option value='1'
-                                                    <?php if($tipo!="" && $tipo=='1'){echo 'selected'; }?>>
-                                                    PRIMERO</option>
-
-                                                <option value='2'
-                                                    <?php if($tipo!="" && $tipo=='2'){echo 'selected'; }?>>
-                                                    SEGUNDO</option>
-
-
-                                            </select>
+                                        
 
                                         </div>
                                         <div class="form-group">
-                                            <label for="detalleTarea">Descripción Tarea</label>
+                                            <label for="detalleTarea">Descripción Comunicado</label>
                                             <textarea class="form-control" id="detalleTarea"name="detalleTarea"
                                                 rows="3"></textarea>
                                         </div>
@@ -312,7 +300,7 @@
     <!-- Page specific script -->
     <script>
     function buscarAsignaturas() {
-        document.getElementById("formTarea").submit();
+        document.getElementById("formComunicado").submit();
     }
     </script>
 </body>
